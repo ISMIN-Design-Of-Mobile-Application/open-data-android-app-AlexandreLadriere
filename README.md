@@ -2,15 +2,23 @@
 ## [APP NAME]  
   
 Codé par :   
- - [prenom1] [nom1]   
- - [prenom2] [nom2]   
+ - Jean-Christophe CHEVALIER   
+ - Alexandre LADRIERE   
 
 ## Description  
   
-URL des données : [URL]  
-  
-[A completer]  
-  
+URL des données : https://sportplaces.api.decathlon.com/api/v1/places  
+
+Cette application Android fait appel à une base de données qui recense tous les lieux sportifs au monde.
+Elle permet ainsi à l'utilisateur de savoir quels lieux à proximité de sa position où aller afin de
+pratiquer un sport qu'il renseigne.
+
+Afin de récupérer les données, le client envoie une requête GET au serveur, sous la forme suivante:
+_https://sportplaces.api.decathlon.com/api/v1/places?origin=x&radius=y&sports=z_ avec
+x: la position actuelle de l'utilisateur.
+y: le rayon de recherche en km.
+z: le code identifiant le sport indiqué. Chaque sport est associé à un code unique.
+
 ## Librairies externes  
   
 [A completer]  
