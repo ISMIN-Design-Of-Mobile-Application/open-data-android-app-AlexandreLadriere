@@ -1,4 +1,4 @@
-package com.ismin.opendataapp
+package com.ismin.opendataapp.sportsfragment
 
 import android.content.Context
 import android.net.Uri
@@ -7,8 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ismin.opendataapp.R
 
-class InfoFragment : Fragment() {
+class SportsFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreateView(
@@ -16,12 +17,12 @@ class InfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_info, container, false)
+        return inflater.inflate(R.layout.fragment_sports, container, false)
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteractionInfo(uri)
+        listener?.onFragmentInteractionSports(uri)
     }
 
     override fun onAttach(context: Context) {
@@ -40,7 +41,7 @@ class InfoFragment : Fragment() {
 
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        fun onFragmentInteractionInfo(uri: Uri)
+        fun onFragmentInteractionSports(uri: Uri)
     }
 
 }

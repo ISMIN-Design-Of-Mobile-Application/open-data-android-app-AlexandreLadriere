@@ -4,9 +4,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.ismin.opendataapp.sportsfragment.SportsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener, InfoFragment.OnFragmentInteractionListener, PlaceListFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener, SportsFragment.OnFragmentInteractionListener, PlaceListFragment.OnFragmentInteractionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,9 +15,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         setSupportActionBar(a_main_toolbar)
 
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+        viewPagerAdapter.addFragment(SportsFragment(), "Sports")
         viewPagerAdapter.addFragment(PlaceListFragment(), "Place List")
         viewPagerAdapter.addFragment(MapFragment(), "Map")
-        viewPagerAdapter.addFragment(InfoFragment(), "App info")
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
     }
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onFragmentInteractionInfo(uri: Uri) {
+    override fun onFragmentInteractionSports(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
