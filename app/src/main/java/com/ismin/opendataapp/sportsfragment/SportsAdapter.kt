@@ -13,14 +13,14 @@ class SportsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellarViewHolder {
         val row = LayoutInflater.from(parent.context).inflate(
-            R.layout.recycler_view_item, parent,
+            R.layout.recycler_view_sports_item, parent,
             false
         )
         return CellarViewHolder(row, selectSport)
     }
 
     override fun onBindViewHolder(viewholder: CellarViewHolder, position: Int) {
-        val (image, name) = this.icons[position]
+        val (id, name, tags, filters) = this.icons[position]
 
         viewholder.sportName.text = name
         viewholder.sportImage.setImageResource(R.drawable.ic_sports_24px)

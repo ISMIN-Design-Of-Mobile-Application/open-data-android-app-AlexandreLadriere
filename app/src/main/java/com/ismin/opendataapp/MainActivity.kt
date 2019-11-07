@@ -18,15 +18,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
     SportsFragment.OnFragmentInteractionListener, PlaceListFragment.OnFragmentInteractionListener {
 
+    // TODO("Add error handling when there is no internet connexion")
     private val SERVER_BASE_URL: String = "https://sportplaces-api.herokuapp.com/api/v1/"
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(SERVER_BASE_URL)
         .build()
 
+    private val sportsFragment = SportsFragment()
+
     private val sportsService = retrofit.create<SportsService>(SportsService::class.java)
     private val sportsList: ArrayList<Sport> = ArrayList()
-
 
     private fun initiateSportsList() {
         sportsService.getAllSports()
@@ -36,13 +38,10 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 ) {
                     val allSports = response.body()
                     if (allSports != null) {
+                        sportsList.clear()
                         sportsList.addAll(allSports)
-                        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-                        viewPagerAdapter.addFragment(SportsFragment(), "Sports")
-                        viewPagerAdapter.addFragment(PlaceListFragment(), "Place List")
-                        viewPagerAdapter.addFragment(MapFragment(), "Map")
-                        a_main_view_pager.adapter = viewPagerAdapter
-                        a_main_tabs.setupWithViewPager(a_main_view_pager)
+                        sportsList.sortBy { it.name }
+                        sportsFragment.setSportsList(sportsList)
                     }
                 }
 
@@ -56,6 +55,14 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(a_main_toolbar)
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+        viewPagerAdapter.addFragment(sportsFragment, "Sports")
+        viewPagerAdapter.addFragment(PlaceListFragment(), "Place List")
+        viewPagerAdapter.addFragment(MapFragment(), "Map")
+
+        a_main_view_pager.adapter = viewPagerAdapter
+        a_main_tabs.setupWithViewPager(a_main_view_pager)
+
         initiateSportsList()
     }
 
