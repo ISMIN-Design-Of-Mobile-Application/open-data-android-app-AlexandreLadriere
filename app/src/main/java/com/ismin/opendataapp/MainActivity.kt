@@ -3,23 +3,67 @@ package com.ismin.opendataapp
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.ismin.opendataapp.sportsfragment.Sport
 import com.ismin.opendataapp.sportsfragment.SportsFragment
+import com.ismin.opendataapp.sportsfragment.SportsService
 import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener, SportsFragment.OnFragmentInteractionListener, PlaceListFragment.OnFragmentInteractionListener {
+class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
+    SportsFragment.OnFragmentInteractionListener, PlaceListFragment.OnFragmentInteractionListener {
+
+    // TODO("Add error handling when there is no internet connexion")
+    private val SERVER_BASE_URL: String = "https://sportplaces-api.herokuapp.com/api/v1/"
+    private val retrofit = Retrofit.Builder()
+        .addConverterFactory(GsonConverterFactory.create())
+        .baseUrl(SERVER_BASE_URL)
+        .build()
+
+    private val sportsFragment = SportsFragment()
+
+    private val sportsService = retrofit.create<SportsService>(SportsService::class.java)
+    private val sportsList: ArrayList<Sport> = ArrayList()
+
+    private fun initiateSportsList() {
+        sportsService.getAllSports()
+            .enqueue(object : Callback<List<Sport>> {
+                override fun onResponse(
+                    call: Call<List<Sport>>, response: Response<List<Sport>>
+                ) {
+                    val allSports = response.body()
+                    if (allSports != null) {
+                        sportsList.clear()
+                        sportsList.addAll(allSports)
+                        sportsList.sortBy { it.name }
+                        sportsFragment.setSportsList(sportsList)
+                    }
+                }
+
+                override fun onFailure(call: Call<List<Sport>>, t: Throwable) {
+                    Toast.makeText(this@MainActivity, "Error: $t", Toast.LENGTH_LONG).show()
+                }
+            })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(a_main_toolbar)
-
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-        viewPagerAdapter.addFragment(SportsFragment(), "Sports")
+        viewPagerAdapter.addFragment(sportsFragment, "Sports")
         viewPagerAdapter.addFragment(PlaceListFragment(), "Place List")
         viewPagerAdapter.addFragment(MapFragment(), "Map")
+
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
+
+        initiateSportsList()
     }
 
     // implementation of fragment interface
@@ -34,7 +78,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     override fun onFragmentInteractionPlaceList(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
 
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

@@ -14,7 +14,7 @@ class CellarViewHolder(
 
     var sportName: TextView = rootView.findViewById(R.id.sport_text_view)
     var sportImage: ImageView = rootView.findViewById(R.id.sport_image_view)
-    var container: ConstraintLayout = rootView.findViewById(R.id.sport_grid_view)
+    private var container: ConstraintLayout = rootView.findViewById(R.id.sport_grid_view)
 
     init {
         container.setOnClickListener {
