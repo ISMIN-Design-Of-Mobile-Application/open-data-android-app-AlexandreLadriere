@@ -20,10 +20,10 @@ class SportsAdapter(
     }
 
     override fun onBindViewHolder(viewholder: CellarViewHolder, position: Int) {
-        val (name, image) = this.icons[position]
+        val (image, name) = this.icons[position]
 
         viewholder.sportName.text = name
-        viewholder.sportImage.setImageResource(image)
+        viewholder.sportImage.setImageResource(R.drawable.ic_sports_24px)
     }
 
     override fun getItemCount(): Int {
