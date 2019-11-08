@@ -1,5 +1,6 @@
 package com.ismin.opendataapp
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -89,7 +90,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_information -> {
-                Toast.makeText(this, "Information activity not implemented yet", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, InfoActivity::class.java)
+                this.startActivity(intent)
+                //Toast.makeText(this, "Information activity not implemented yet", Toast.LENGTH_SHORT).show()
                 true
             }
             else -> super.onOptionsItemSelected(item)
