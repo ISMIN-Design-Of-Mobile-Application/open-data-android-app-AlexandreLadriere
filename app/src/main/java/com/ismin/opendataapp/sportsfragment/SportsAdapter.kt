@@ -9,17 +9,17 @@ class SportsAdapter(
     private val icons: ArrayList<Sport>,
     private val selectSport: (Int) -> Unit
 ) :
-    RecyclerView.Adapter<CellarViewHolder>() {
+    RecyclerView.Adapter<SportsViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CellarViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SportsViewHolder {
         val row = LayoutInflater.from(parent.context).inflate(
             R.layout.recycler_view_sports_item, parent,
             false
         )
-        return CellarViewHolder(row, selectSport)
+        return SportsViewHolder(row, selectSport)
     }
 
-    override fun onBindViewHolder(viewholder: CellarViewHolder, position: Int) {
+    override fun onBindViewHolder(viewholder: SportsViewHolder, position: Int) {
         val (id, name, tags, filters) = this.icons[position]
 
         viewholder.sportName.text = name

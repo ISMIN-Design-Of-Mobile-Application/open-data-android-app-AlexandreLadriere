@@ -7,7 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.ismin.opendataapp.R
 
-class CellarViewHolder(
+class SportsViewHolder(
     rootView: View,
     private val selectSport: (Int) -> Unit
 ) : RecyclerView.ViewHolder(rootView) {
