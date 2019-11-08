@@ -16,7 +16,7 @@ class PlacesAdapter(private val places: ArrayList<Place>, private val selectPlac
     override fun onBindViewHolder(holder: PlacesViewHolder, position: Int) {
         val (name, address, distance, latitude, longitude, website, image) = this.places[position]
         holder.placeAddress.text = address
-        holder.placeDistance.text = distance
+        holder.placeDistance.text = distance + " km"
         holder.placeName.text = name
         holder.placeImage.setImageResource(image)
     }
