@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.ismin.opendataapp.placesfragment.Place
+import com.ismin.opendataapp.placesfragment.PlaceListFragment
 import com.ismin.opendataapp.sportsfragment.Sport
 import com.ismin.opendataapp.sportsfragment.SportsFragment
 import com.ismin.opendataapp.sportsfragment.SportsService
@@ -26,9 +28,12 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         .build()
 
     private val sportsFragment = SportsFragment()
+    private val placesListFragment = PlaceListFragment()
+    private val mapFragment = MapFragment()
 
     private val sportsService = retrofit.create<SportsService>(SportsService::class.java)
     private val sportsList: ArrayList<Sport> = ArrayList()
+    private val placesList: ArrayList<Place> = ArrayList()
 
     private fun initiateSportsList() {
         sportsService.getAllSports()
@@ -57,13 +62,19 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         setSupportActionBar(a_main_toolbar)
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         viewPagerAdapter.addFragment(sportsFragment, "Sports")
-        viewPagerAdapter.addFragment(PlaceListFragment(), "Place List")
-        viewPagerAdapter.addFragment(MapFragment(), "Map")
+        viewPagerAdapter.addFragment(placesListFragment, "Place List")
+        viewPagerAdapter.addFragment(mapFragment, "Map")
 
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
 
         initiateSportsList()
+
+        // TEST
+        placesList.add(Place("Orange Vélodrome", "24 Rue du Commandant Guilbaud\n75016 Paris\nFrance", "0.123", "45.123", "54.123"))
+        placesList.add(Place("Stade Municipal de Melun", "2 Rue Dorée\n77000 Melun\nFrance", "0.077", "77.123", "12.123"))
+        placesList.add(Place("Stadio Olimpico", "Viale dei Gladiatori\n00135 Roma RM\nItaly", "1023.193", "77.123", "12.123"))
+        placesListFragment.setPlacesList(placesList)
     }
 
     // implementation of fragment interface
