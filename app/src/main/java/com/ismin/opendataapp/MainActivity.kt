@@ -1,7 +1,10 @@
 package com.ismin.opendataapp
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -76,6 +79,26 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         placesList.add(Place("Stadio Olimpico", "Viale dei Gladiatori\n00135 Roma RM\nItaly", "1023.193", "77.123", "12.123"))
         placesListFragment.setPlacesList(placesList)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_information -> {
+                val intent = Intent(this, InfoActivity::class.java)
+                this.startActivity(intent)
+                //Toast.makeText(this, "Information activity not implemented yet", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
     // implementation of fragment interface
     override fun onFragmentInteractionMap(uri: Uri) {

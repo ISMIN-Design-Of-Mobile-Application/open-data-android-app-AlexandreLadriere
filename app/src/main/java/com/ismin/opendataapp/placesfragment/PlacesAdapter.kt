@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ismin.opendataapp.R
 
 class PlacesAdapter(private val places: ArrayList<Place>, private val selectPlace: (Int) -> Unit) :
-        RecyclerView.Adapter<PlacesViewHolder>() {
+    RecyclerView.Adapter<PlacesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesViewHolder {
-        val row = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_place_item, parent, false)
+        val row = LayoutInflater.from(parent.context)
+            .inflate(R.layout.recycler_view_place_item, parent, false)
         return PlacesViewHolder(row, selectPlace)
     }
 
