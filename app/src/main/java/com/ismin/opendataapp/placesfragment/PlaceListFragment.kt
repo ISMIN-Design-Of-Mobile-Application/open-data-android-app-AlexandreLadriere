@@ -7,12 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ismin.opendataapp.R
-import com.ismin.opendataapp.sportsfragment.Sport
-import com.ismin.opendataapp.sportsfragment.SportsAdapter
 
 class PlaceListFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
@@ -58,6 +55,7 @@ class PlaceListFragment : Fragment() {
     }
 
     private fun selectPlace(position: Int) {
+        // TODO: Implement that function after creating the third fragment
     }
 
     interface OnFragmentInteractionListener {
