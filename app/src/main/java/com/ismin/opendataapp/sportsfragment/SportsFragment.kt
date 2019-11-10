@@ -3,17 +3,21 @@ package com.ismin.opendataapp.sportsfragment
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
 import com.ismin.opendataapp.R
 
 class SportsFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
+    private var initSportsList: ArrayList<Sport> = ArrayList()
     private var sportsList: ArrayList<Sport> = ArrayList()
     private val adapter = SportsAdapter(sportsList, ::selectSport)
 
@@ -28,6 +32,31 @@ class SportsFragment : Fragment() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
+        val searchInput = view.findViewById<TextInputEditText>(R.id.search_text_input_edit)
+        searchInput.setOnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_NAVIGATE_NEXT) {
+                searchInput.isSelected = false
+                true
+            } else {
+                false
+            }
+        }
+        searchInput.doAfterTextChanged {
+            val searchInputText = searchInput.text.toString().toLowerCase()
+            sportsList.clear()
+            for (sport in initSportsList) {
+                if (sport.name.length > searchInputText.length) {
+                    if (sport.name.toLowerCase().subSequence(
+                            0,
+                            searchInputText.length
+                        ).toString().equals(searchInputText)
+                    ) {
+                        sportsList.add(sport)
+                    }
+                }
+            }
+            adapter.notifyDataSetChanged()
+        }
         return view
     }
 
@@ -56,6 +85,8 @@ class SportsFragment : Fragment() {
     }
 
     fun setSportsList(sportsList: ArrayList<Sport>) {
+        this.initSportsList.clear()
+        this.initSportsList.addAll(sportsList)
         this.sportsList.clear()
         this.sportsList.addAll(sportsList)
         adapter.notifyDataSetChanged()
