@@ -1,12 +1,17 @@
 package com.ismin.opendataapp
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.ismin.opendataapp.placesfragment.Place
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
@@ -80,12 +85,16 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         placesListFragment.setPlacesList(placesList)
     }
 
+    override fun onResume() {
+        super.onResume()
+        checkConnectivity(this)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -117,6 +126,29 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) hideSystemUI()
+    }
+
+    private fun checkConnectivity(context: Context) {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+        //Alert Dialog box
+        val alertDialog: AlertDialog? = this.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setPositiveButton(R.string.ok,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // User clicked OK button
+                    })
+            }
+            builder.setTitle(R.string.no_internet_connexion)
+            builder.setMessage(R.string.offline_message)
+            // Create the AlertDialog
+            builder.create()
+        }
+        if(!isConnected) {
+            alertDialog?.show()
+        }
     }
 
     private fun hideSystemUI() {
