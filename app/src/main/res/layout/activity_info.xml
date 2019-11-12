@@ -201,7 +201,8 @@
                                 android:textSize="12sp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginLeft="10dp"
-                                android:autoLink="web"/>
+                                android:autoLink="web"
+                                android:textColorLink="@color/colorWhite"/>
 
                         </LinearLayout>
 
@@ -233,7 +234,8 @@
                                 android:text="@string/github_chevalier"
                                 android:textColor="@color/colorWhite"
                                 android:textSize="12sp"
-                                android:autoLink="web"/>
+                                android:autoLink="web"
+                                android:textColorLink="@color/colorWhite"/>
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -306,7 +308,8 @@
                                 android:textSize="12sp"
                                 android:autoLink="web"
                                 android:layout_marginStart="10dp"
-                                android:layout_marginLeft="10dp" />
+                                android:layout_marginLeft="10dp"
+                                android:textColorLink="@color/colorWhite"/>
 
                         </LinearLayout>
 
@@ -338,7 +341,8 @@
                                 android:text="@string/github_ladriere"
                                 android:textColor="@color/colorWhite"
                                 android:textSize="12sp"
-                                android:autoLink="web"/>
+                                android:autoLink="web"
+                                android:textColorLink="@color/colorWhite"/>
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
