@@ -8,27 +8,15 @@
     tools:context=".sportsfragment.SportsFragment">
 
 
-    <TextView
-        android:id="@+id/f_txv_info"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_sports"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="@string/sports_list"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="75dp"
-        android:layout_marginBottom="75dp"
-        android:id="@+id/recycler_view_sports"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/f_txv_info"
-        tools:itemCount="20"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        tools:itemCount="16"
         tools:layoutManager="GridLayoutManager"
         tools:listitem="@layout/recycler_view_sports_item"
         tools:spanCount="4" />
@@ -44,5 +32,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_text_input_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@android:string/search_go"
+            android:singleLine="true" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
