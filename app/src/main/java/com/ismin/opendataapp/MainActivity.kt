@@ -108,7 +108,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         }
     }
 
-
     // implementation of fragment interface
     override fun onFragmentInteractionMap(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -121,7 +120,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     override fun onFragmentInteractionPlaceList(uri: Uri) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
