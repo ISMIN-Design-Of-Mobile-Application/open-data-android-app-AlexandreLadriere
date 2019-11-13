@@ -28,7 +28,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
     SportsFragment.OnFragmentInteractionListener, PlaceListFragment.OnFragmentInteractionListener {
 
-    // TODO("Add error handling when there is no internet connexion")
     private val SERVER_BASE_URL: String = "https://sportplaces-api.herokuapp.com/api/v1/"
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
@@ -76,8 +75,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
 
-        initiateSportsList()
-
         // TEST
         placesList.add(Place("Orange Vélodrome", "24 Rue du Commandant Guilbaud\n75016 Paris\nFrance", "0.123", "45.123", "54.123"))
         placesList.add(Place("Stade Municipal de Melun", "2 Rue Dorée\n77000 Melun\nFrance", "0.077", "77.123", "12.123"))
@@ -88,6 +85,13 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     override fun onResume() {
         super.onResume()
         checkConnectivity(this)
+        initiateSportsList()
+    }
+
+    override fun sendPlaceObject(place: Place) {
+        val intent = Intent(this, PlaceDetailsActivity::class.java)
+        intent.putExtra(Intent.EXTRA_TEXT, place)
+        this.startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

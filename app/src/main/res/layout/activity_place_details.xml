@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:focusable="false"
-        android:maxHeight="400dp"
+        android:maxHeight="500dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
     <LinearLayout
         android:id="@+id/a_place_details_linear_layout_details"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="450dp"
         android:orientation="vertical"
         android:background="@drawable/custom_rectangle_white_cr20"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -59,11 +59,13 @@ class PlaceListFragment : Fragment() {
         // TODO: Implement that function after creating the third fragment
         val placeToDisplay = this.placesList[position]
         Toast.makeText(context, "$placeToDisplay", Toast.LENGTH_SHORT).show()
+        listener?.sendPlaceObject(placeToDisplay)
     }
 
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteractionPlaceList(uri: Uri)
+        fun sendPlaceObject(place: Place)
     }
 
 }
