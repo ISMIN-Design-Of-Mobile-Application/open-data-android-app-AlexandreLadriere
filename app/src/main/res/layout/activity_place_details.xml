@@ -50,7 +50,6 @@
             android:layout_marginTop="5dp"
             android:textAlignment="center"
             android:text="0.077 km"
-            android:textColor="@color/colorBlack"
             android:textStyle="italic"
             android:textSize="16sp"/>
 
