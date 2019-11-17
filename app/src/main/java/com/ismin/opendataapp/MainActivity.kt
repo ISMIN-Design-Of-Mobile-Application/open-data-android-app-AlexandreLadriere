@@ -77,8 +77,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
         // TEST
         placesList.add(Place("Orange Vélodrome", "24 Rue du Commandant Guilbaud\n75016 Paris\nFrance", "0.123", "45.123", "54.123"))
-        placesList.add(Place("Stade Municipal de Melun", "2 Rue Dorée\n77000 Melun\nFrance", "0.077", "77.123", "12.123"))
-        placesList.add(Place("Stadio Olimpico", "Viale dei Gladiatori\n00135 Roma RM\nItaly", "1023.193", "77.123", "12.123"))
+        placesList.add(Place("Stade Municipal de Melun", "2 Rue Dorée\n77000 Melun\nFrance", "0.077", "77.123", "12.123", image = R.drawable.stade_municipal_melun))
+        placesList.add(Place("Stadio Olimpico", "Viale dei Gladiatori\n00135 Roma RM\nItaly", "1023.193", "77.123", "12.123", image = R.drawable.stadio_olimpico))
         placesListFragment.setPlacesList(placesList)
     }
 
