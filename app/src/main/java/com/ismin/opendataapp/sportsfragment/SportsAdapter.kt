@@ -4,9 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ismin.opendataapp.R
+import com.ismin.opendataapp.sportsfragment.database.SportEntity
 
 class SportsAdapter(
-    private val icons: ArrayList<Sport>,
+    private val icons: ArrayList<SportEntity>,
     private val selectSport: (Int) -> Unit
 ) :
     RecyclerView.Adapter<SportsViewHolder>() {
@@ -20,7 +21,7 @@ class SportsAdapter(
     }
 
     override fun onBindViewHolder(viewholder: SportsViewHolder, position: Int) {
-        val (id, name, tags, filters) = this.icons[position]
+        val (id, name) = this.icons[position]
 
         viewholder.sportName.text = name
         viewholder.sportImage.setImageResource(R.drawable.ic_sports_24px)

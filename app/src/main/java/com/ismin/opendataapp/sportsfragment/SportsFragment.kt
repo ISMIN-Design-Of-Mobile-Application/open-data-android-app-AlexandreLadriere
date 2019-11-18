@@ -13,12 +13,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.ismin.opendataapp.R
+import com.ismin.opendataapp.sportsfragment.database.SportEntity
 
 class SportsFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
-    private var initSportsList: ArrayList<Sport> = ArrayList()
-    private var sportsList: ArrayList<Sport> = ArrayList()
+    private var initSportsList: ArrayList<SportEntity> = ArrayList()
+    private var sportsList: ArrayList<SportEntity> = ArrayList()
     private val adapter = SportsAdapter(sportsList, ::selectSport)
 
     override fun onCreateView(
@@ -84,7 +85,7 @@ class SportsFragment : Fragment() {
         fun onFragmentInteractionSports(uri: Uri)
     }
 
-    fun setSportsList(sportsList: ArrayList<Sport>) {
+    fun setSportsList(sportsList: ArrayList<SportEntity>) {
         this.initSportsList.clear()
         this.initSportsList.addAll(sportsList)
         this.sportsList.clear()
