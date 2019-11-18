@@ -7,21 +7,34 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), OnMapReadyCallback {
+
     private var listener: OnFragmentInteractionListener? = null
+    private lateinit var gMap: GoogleMap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteractionMap(uri)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        gMap = googleMap
+        val gardanne = LatLng(43.45, 5.4667)
+        gMap.addMarker(MarkerOptions().position(gardanne).title("Mines St Etienne"))
+        gMap.moveCamera(CameraUpdateFactory.newLatLng(gardanne))
     }
 
     override fun onAttach(context: Context) {
@@ -29,7 +42,7 @@ class MapFragment : Fragment() {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException("$context must implement OnFragmentInteractionListener")
+            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
         }
     }
 
@@ -39,8 +52,12 @@ class MapFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         fun onFragmentInteractionMap(uri: Uri)
     }
 
+    override fun onStart() {
+        super.onStart()
+        val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
 }
