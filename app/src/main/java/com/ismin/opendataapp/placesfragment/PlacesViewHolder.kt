@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.ismin.opendataapp.R
+import com.ismin.opendataapp.curveImageViewCorner
 
 class PlacesViewHolder(rootView: View, private val selectPlace: (Int) -> Unit) :
     RecyclerView.ViewHolder(rootView) {
@@ -20,5 +21,6 @@ class PlacesViewHolder(rootView: View, private val selectPlace: (Int) -> Unit) :
         container.setOnClickListener {
             selectPlace(adapterPosition)
         }
+        curveImageViewCorner(placeImage, 30F)
     }
 }

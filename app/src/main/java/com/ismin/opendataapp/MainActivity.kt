@@ -1,12 +1,17 @@
 package com.ismin.opendataapp
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.ismin.opendataapp.placesfragment.Place
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
@@ -23,7 +28,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
     SportsFragment.OnFragmentInteractionListener, PlaceListFragment.OnFragmentInteractionListener {
 
-    // TODO("Add error handling when there is no internet connexion")
     private val SERVER_BASE_URL: String = "https://sportplaces-api.herokuapp.com/api/v1/"
     private val retrofit = Retrofit.Builder()
         .addConverterFactory(GsonConverterFactory.create())
@@ -71,13 +75,23 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
 
-        initiateSportsList()
-
         // TEST
         placesList.add(Place("Orange Vélodrome", "24 Rue du Commandant Guilbaud\n75016 Paris\nFrance", "0.123", "45.123", "54.123"))
-        placesList.add(Place("Stade Municipal de Melun", "2 Rue Dorée\n77000 Melun\nFrance", "0.077", "77.123", "12.123"))
-        placesList.add(Place("Stadio Olimpico", "Viale dei Gladiatori\n00135 Roma RM\nItaly", "1023.193", "77.123", "12.123"))
+        placesList.add(Place("Stade Municipal de Melun", "2 Rue Dorée\n77000 Melun\nFrance", "0.077", "77.123", "12.123", image = R.drawable.stade_municipal_melun))
+        placesList.add(Place("Stadio Olimpico", "Viale dei Gladiatori\n00135 Roma RM\nItaly", "1023.193", "77.123", "12.123", image = R.drawable.stadio_olimpico))
         placesListFragment.setPlacesList(placesList)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkConnectivity(this)
+        initiateSportsList()
+    }
+
+    override fun sendPlaceObject(place: Place) {
+        val intent = Intent(this, PlaceDetailsActivity::class.java)
+        intent.putExtra(Intent.EXTRA_TEXT, place)
+        this.startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -85,7 +99,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         inflater.inflate(R.menu.menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -98,7 +111,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
     // implementation of fragment interface
     override fun onFragmentInteractionMap(uri: Uri) {
@@ -113,10 +125,32 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) hideSystemUI()
+    }
+
+    private fun checkConnectivity(context: Context) {
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+        //Alert Dialog box
+        val alertDialog: AlertDialog? = this.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setPositiveButton(R.string.ok,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // User clicked OK button
+                    })
+            }
+            builder.setTitle(R.string.no_internet_connexion)
+            builder.setMessage(R.string.offline_message)
+            // Create the AlertDialog
+            builder.create()
+        }
+        if(!isConnected) {
+            alertDialog?.show()
+        }
     }
 
     private fun hideSystemUI() {
