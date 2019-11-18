@@ -15,9 +15,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.ismin.opendataapp.placesfragment.Place
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
-import com.ismin.opendataapp.sportsfragment.Sport
 import com.ismin.opendataapp.sportsfragment.SportsFragment
 import com.ismin.opendataapp.sportsfragment.SportsService
+import com.ismin.opendataapp.sportsfragment.database.SportEntity
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,14 +39,14 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     private val mapFragment = MapFragment()
 
     private val sportsService = retrofit.create<SportsService>(SportsService::class.java)
-    private val sportsList: ArrayList<Sport> = ArrayList()
+    private val sportsList: ArrayList<SportEntity> = ArrayList()
     private val placesList: ArrayList<Place> = ArrayList()
 
     private fun initiateSportsList() {
         sportsService.getAllSports()
-            .enqueue(object : Callback<List<Sport>> {
+            .enqueue(object : Callback<List<SportEntity>> {
                 override fun onResponse(
-                    call: Call<List<Sport>>, response: Response<List<Sport>>
+                    call: Call<List<SportEntity>>, response: Response<List<SportEntity>>
                 ) {
                     val allSports = response.body()
                     if (allSports != null) {
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                     }
                 }
 
-                override fun onFailure(call: Call<List<Sport>>, t: Throwable) {
+                override fun onFailure(call: Call<List<SportEntity>>, t: Throwable) {
                     Toast.makeText(this@MainActivity, "Error: $t", Toast.LENGTH_LONG).show()
                 }
             })
@@ -76,9 +76,35 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         a_main_tabs.setupWithViewPager(a_main_view_pager)
 
         // TEST
-        placesList.add(Place("Orange Vélodrome", "24 Rue du Commandant Guilbaud\n75016 Paris\nFrance", "0.123", "45.123", "54.123"))
-        placesList.add(Place("Stade Municipal de Melun", "2 Rue Dorée\n77000 Melun\nFrance", "0.077", "77.123", "12.123", image = R.drawable.stade_municipal_melun))
-        placesList.add(Place("Stadio Olimpico", "Viale dei Gladiatori\n00135 Roma RM\nItaly", "1023.193", "77.123", "12.123", image = R.drawable.stadio_olimpico))
+        placesList.add(
+            Place(
+                "Orange Vélodrome",
+                "24 Rue du Commandant Guilbaud\n75016 Paris\nFrance",
+                "0.123",
+                "45.123",
+                "54.123"
+            )
+        )
+        placesList.add(
+            Place(
+                "Stade Municipal de Melun",
+                "2 Rue Dorée\n77000 Melun\nFrance",
+                "0.077",
+                "77.123",
+                "12.123",
+                image = R.drawable.stade_municipal_melun
+            )
+        )
+        placesList.add(
+            Place(
+                "Stadio Olimpico",
+                "Viale dei Gladiatori\n00135 Roma RM\nItaly",
+                "1023.193",
+                "77.123",
+                "12.123",
+                image = R.drawable.stadio_olimpico
+            )
+        )
         placesListFragment.setPlacesList(placesList)
     }
 
@@ -148,7 +174,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             // Create the AlertDialog
             builder.create()
         }
-        if(!isConnected) {
+        if (!isConnected) {
             alertDialog?.show()
         }
     }
