@@ -6,20 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [SportEntity::class], version = 1)
-abstract class UserDatabase : RoomDatabase() {
+abstract class SportDatabase : RoomDatabase() {
 
-    abstract fun getUserDao(): SportEntity
+    abstract fun getSportDAO(): SportDAO
 
     companion object {
-        private var INSTANCE: UserDatabase? = null
+        private var INSTANCE: SportDatabase? = null
 
-        fun getAppDatabase(context: Context): UserDatabase {
+        fun getAppDatabase(context: Context): SportDatabase {
             if (INSTANCE == null) {
-                synchronized(UserDatabase::class) {
+                synchronized(SportDatabase::class) {
                     INSTANCE = Room
                         .databaseBuilder(
                             context.applicationContext,
-                            UserDatabase::class.java,
+                            SportDatabase::class.java,
                             "SportDB"
                         )
                         .allowMainThreadQueries()
@@ -27,7 +27,7 @@ abstract class UserDatabase : RoomDatabase() {
                         .build()
                 }
             }
-            return INSTANCE as UserDatabase
+            return INSTANCE as SportDatabase
         }
     }
 }

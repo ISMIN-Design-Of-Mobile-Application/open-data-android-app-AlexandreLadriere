@@ -7,9 +7,7 @@ import java.io.Serializable
 data class SportEntity(
     @PrimaryKey
     val id: Int,
-    val name: String,
-    val tags: ArrayList<String>,
-    val filters: ArrayList<String>
+    val name: String
 ) : Serializable
 
 @Dao

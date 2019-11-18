@@ -21,7 +21,7 @@ class SportsAdapter(
     }
 
     override fun onBindViewHolder(viewholder: SportsViewHolder, position: Int) {
-        val (id, name, tags, filters) = this.icons[position]
+        val (id, name) = this.icons[position]
 
         viewholder.sportName.text = name
         viewholder.sportImage.setImageResource(R.drawable.ic_sports_24px)

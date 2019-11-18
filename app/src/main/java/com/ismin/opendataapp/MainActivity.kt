@@ -17,6 +17,8 @@ import com.ismin.opendataapp.placesfragment.Place
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
 import com.ismin.opendataapp.sportsfragment.SportsFragment
 import com.ismin.opendataapp.sportsfragment.SportsService
+import com.ismin.opendataapp.sportsfragment.database.SportDAO
+import com.ismin.opendataapp.sportsfragment.database.SportDatabase
 import com.ismin.opendataapp.sportsfragment.database.SportEntity
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -34,6 +36,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         .baseUrl(SERVER_BASE_URL)
         .build()
 
+    private lateinit var sportDAO: SportDAO
+
     private val sportsFragment = SportsFragment()
     private val placesListFragment = PlaceListFragment()
     private val mapFragment = MapFragment()
@@ -50,6 +54,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 ) {
                     val allSports = response.body()
                     if (allSports != null) {
+                        allSports.forEach { sportEntity: SportEntity ->
+                            sportDAO.insert(sportEntity)
+                        }
                         sportsList.clear()
                         sportsList.addAll(allSports)
                         sportsList.sortBy { it.name }
@@ -71,6 +78,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         viewPagerAdapter.addFragment(sportsFragment, "Sports")
         viewPagerAdapter.addFragment(placesListFragment, "Place List")
         viewPagerAdapter.addFragment(mapFragment, "Map")
+
+        sportDAO = SportDatabase.getAppDatabase(this).getSportDAO()
 
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
