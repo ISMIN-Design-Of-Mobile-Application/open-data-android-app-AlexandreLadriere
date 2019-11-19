@@ -19,7 +19,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var gMap: GoogleMap
-    private var locationsList: ArrayList<LatLng> = ArrayList()
+    private var locationsList: MutableMap<String, LatLng> = mutableMapOf()
     private var isMapReady = false
 
     override fun onCreateView(
@@ -35,7 +35,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
-        displayOnMap()
         isMapReady = true
     }
 
@@ -63,29 +62,33 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    private fun displayOnMap() {
-        locationsList.forEach {
-            gMap.clear()
-            gMap.addMarker(MarkerOptions().position(it).title("Mines St Etienne"))
-            gMap.moveCamera(CameraUpdateFactory.newLatLng(it))
+    private fun displayOnMap(key: String) {
+        val location = locationsList[key]
+        if (location != null) {
+            gMap.addMarker(MarkerOptions().position(location).title(key))
+            gMap.moveCamera(CameraUpdateFactory.newLatLng(location))
         }
     }
 
-    fun addLocation(location: Location) {
-        locationsList.add(LatLng(location.latitude, location.longitude))
+    private fun displayOnMap() {
+        gMap.clear()
+        for ((key, location) in locationsList) {
+            gMap.addMarker(MarkerOptions().position(location).title(key))
+        }
+    }
+
+    fun addLocation(location: Location, name: String) {
+        locationsList[name] = LatLng(location.latitude, location.longitude)
         if (isMapReady) {
-            displayOnMap()
+            displayOnMap(name)
         }
     }
 
     fun setActualLocation(location: Location) {
-        if (locationsList.size != 0) {
-            locationsList[0] = LatLng(location.latitude, location.longitude)
-            if (isMapReady) {
-                displayOnMap()
-            }
-        } else {
-            addLocation(location)
+        val key = "Current Location"
+        locationsList[key] = LatLng(location.latitude, location.longitude)
+        if (isMapReady) {
+            displayOnMap(key)
         }
     }
 }

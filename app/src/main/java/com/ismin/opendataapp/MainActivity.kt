@@ -102,17 +102,12 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         val locationManager: LocationManager =
             getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        try {
-            // Request location updates
-            locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,
-                0L,
-                0f,
-                locationListener
-            )
-        } catch (ex: SecurityException) {
-            System.out.println("Nothing")
-        }
+        locationManager.requestLocationUpdates(
+            LocationManager.NETWORK_PROVIDER,
+            0,
+            0f,
+            locationListener
+        )
 
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
