@@ -24,7 +24,6 @@ class SportsAdapter(
         val (id, name) = this.icons[position]
 
         viewholder.sportName.text = name
-        viewholder.sportImage.setImageResource(R.drawable.ic_sports_24px)
     }
 
     override fun getItemCount(): Int {

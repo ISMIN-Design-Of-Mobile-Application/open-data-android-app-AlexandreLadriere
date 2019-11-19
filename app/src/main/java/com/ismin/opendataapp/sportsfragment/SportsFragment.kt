@@ -43,15 +43,11 @@ class SportsFragment : Fragment() {
             }
         }
         searchInput.doAfterTextChanged {
-            val searchInputText = searchInput.text.toString().toLowerCase()
+            val searchInputText = searchInput.text.toString()
             sportsList.clear()
             for (sport in initSportsList) {
-                if (sport.name.length > searchInputText.length) {
-                    if (sport.name.toLowerCase().subSequence(
-                            0,
-                            searchInputText.length
-                        ).toString().equals(searchInputText)
-                    ) {
+                if (sport.name.length >= searchInputText.length) {
+                    if (sport.name.contains(searchInputText, ignoreCase = true)) {
                         sportsList.add(sport)
                     }
                 }
