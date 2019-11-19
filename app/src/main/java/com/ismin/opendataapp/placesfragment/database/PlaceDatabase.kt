@@ -1,4 +1,4 @@
-package com.ismin.opendataapp.sportsfragment.database.places
+package com.ismin.opendataapp.placesfragment.database
 
 import android.content.Context
 import androidx.room.Database

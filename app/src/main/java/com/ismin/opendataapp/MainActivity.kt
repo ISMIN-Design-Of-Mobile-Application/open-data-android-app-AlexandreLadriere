@@ -22,9 +22,9 @@ import com.ismin.opendataapp.placesfragment.Place
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
 import com.ismin.opendataapp.sportsfragment.SportsFragment
 import com.ismin.opendataapp.sportsfragment.SportsService
-import com.ismin.opendataapp.sportsfragment.database.sports.SportDAO
-import com.ismin.opendataapp.sportsfragment.database.sports.SportDatabase
-import com.ismin.opendataapp.sportsfragment.database.sports.SportEntity
+import com.ismin.opendataapp.sportsfragment.database.SportDAO
+import com.ismin.opendataapp.sportsfragment.database.SportDatabase
+import com.ismin.opendataapp.sportsfragment.database.SportEntity
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
