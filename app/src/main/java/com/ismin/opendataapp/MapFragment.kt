@@ -1,6 +1,7 @@
 package com.ismin.opendataapp
 
 import android.content.Context
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +19,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var gMap: GoogleMap
+    private var locationsList: ArrayList<LatLng> = ArrayList()
+    private var isMapReady = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +35,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
-        val gardanne = LatLng(43.45, 5.4667)
-        gMap.addMarker(MarkerOptions().position(gardanne).title("Mines St Etienne"))
-        gMap.moveCamera(CameraUpdateFactory.newLatLng(gardanne))
+        displayOnMap()
+        isMapReady = true
     }
 
     override fun onAttach(context: Context) {
@@ -42,7 +44,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("$context must implement OnFragmentInteractionListener")
         }
     }
 
@@ -59,5 +61,31 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onStart()
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         mapFragment.getMapAsync(this)
+    }
+
+    private fun displayOnMap() {
+        locationsList.forEach {
+            gMap.clear()
+            gMap.addMarker(MarkerOptions().position(it).title("Mines St Etienne"))
+            gMap.moveCamera(CameraUpdateFactory.newLatLng(it))
+        }
+    }
+
+    fun addLocation(location: Location) {
+        locationsList.add(LatLng(location.latitude, location.longitude))
+        if (isMapReady) {
+            displayOnMap()
+        }
+    }
+
+    fun setActualLocation(location: Location) {
+        if (locationsList.size != 0) {
+            locationsList[0] = LatLng(location.latitude, location.longitude)
+            if (isMapReady) {
+                displayOnMap()
+            }
+        } else {
+            addLocation(location)
+        }
     }
 }

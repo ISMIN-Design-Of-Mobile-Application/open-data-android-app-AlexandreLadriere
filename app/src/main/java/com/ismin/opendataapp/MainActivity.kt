@@ -1,8 +1,12 @@
 package com.ismin.opendataapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
@@ -13,19 +17,21 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.ismin.opendataapp.placesfragment.Place
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
 import com.ismin.opendataapp.sportsfragment.SportsFragment
 import com.ismin.opendataapp.sportsfragment.SportsService
-import com.ismin.opendataapp.sportsfragment.database.SportDAO
-import com.ismin.opendataapp.sportsfragment.database.SportDatabase
-import com.ismin.opendataapp.sportsfragment.database.SportEntity
+import com.ismin.opendataapp.sportsfragment.database.sports.SportDAO
+import com.ismin.opendataapp.sportsfragment.database.sports.SportDatabase
+import com.ismin.opendataapp.sportsfragment.database.sports.SportEntity
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
 
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
     SportsFragment.OnFragmentInteractionListener, PlaceListFragment.OnFragmentInteractionListener {
@@ -70,10 +76,22 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             })
     }
 
+    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(a_main_toolbar)
+
+        val requestCode = 0
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            requestCode
+        )
+
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
         viewPagerAdapter.addFragment(sportsFragment, "Sports")
         viewPagerAdapter.addFragment(placesListFragment, "Place List")
@@ -81,10 +99,24 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
         sportDAO = SportDatabase.getAppDatabase(this).getSportDAO()
 
+        val locationManager: LocationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        try {
+            // Request location updates
+            locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER,
+                0L,
+                0f,
+                locationListener
+            )
+        } catch (ex: SecurityException) {
+            System.out.println("Nothing")
+        }
+
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
 
-        // TEST
         placesList.add(
             Place(
                 "Orange Vélodrome",
@@ -135,36 +167,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_information -> {
-                val intent = Intent(this, InfoActivity::class.java)
-                this.startActivity(intent)
-                //Toast.makeText(this, "Information activity not implemented yet", Toast.LENGTH_SHORT).show()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    // implementation of fragment interface
-    override fun onFragmentInteractionMap(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onFragmentInteractionSports(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onFragmentInteractionPlaceList(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) hideSystemUI()
-    }
-
     private fun checkConnectivity(context: Context) {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
@@ -203,12 +205,48 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
     }
 
-    // Shows the system bars by removing all the flags
-    // except for the ones that make the content appear under the system bars.
     private fun showSystemUI() {
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_information -> {
+                val intent = Intent(this, InfoActivity::class.java)
+                this.startActivity(intent)
+                //Toast.makeText(this, "Information activity not implemented yet", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onFragmentInteractionMap(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onFragmentInteractionSports(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onFragmentInteractionPlaceList(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) hideSystemUI()
+    }
+
+    private val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            mapFragment.setActualLocation(location)
+        }
+
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
 }

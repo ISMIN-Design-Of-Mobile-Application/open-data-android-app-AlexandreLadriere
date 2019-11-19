@@ -1,4 +1,4 @@
-package com.ismin.opendataapp.sportsfragment.database
+package com.ismin.opendataapp.sportsfragment.database.sports
 
 import androidx.room.*
 import java.io.Serializable
@@ -14,7 +14,7 @@ data class SportEntity(
 interface SportDAO {
 
     @Query("SELECT * FROM SportEntity")
-    fun getAll(): SportEntity
+    fun getAll(): List<SportEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg sportEntity: SportEntity)

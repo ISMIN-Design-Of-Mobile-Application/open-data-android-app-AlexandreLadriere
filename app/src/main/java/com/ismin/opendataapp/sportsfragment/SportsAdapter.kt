@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ismin.opendataapp.R
-import com.ismin.opendataapp.sportsfragment.database.SportEntity
+import com.ismin.opendataapp.sportsfragment.database.sports.SportEntity
 
 class SportsAdapter(
     private val icons: ArrayList<SportEntity>,

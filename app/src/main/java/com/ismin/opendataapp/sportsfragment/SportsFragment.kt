@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.ismin.opendataapp.R
-import com.ismin.opendataapp.sportsfragment.database.SportEntity
+import com.ismin.opendataapp.sportsfragment.database.sports.SportEntity
 
 class SportsFragment : Fragment() {
 
