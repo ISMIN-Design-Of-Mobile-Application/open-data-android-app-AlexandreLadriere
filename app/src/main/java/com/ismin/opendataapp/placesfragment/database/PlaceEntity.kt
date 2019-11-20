@@ -5,9 +5,15 @@ import java.io.Serializable
 
 @Entity
 data class PlaceEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val name: String
+    val name: String,
+    val address: String,
+    val distance: String,
+    val latitude: String,
+    val longitude: String,
+    val website: String,
+    val image: Int
 ) : Serializable
 
 @Dao
