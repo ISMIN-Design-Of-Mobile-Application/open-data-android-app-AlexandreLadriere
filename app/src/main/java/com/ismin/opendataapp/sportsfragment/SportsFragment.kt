@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.ismin.opendataapp.R
 import com.ismin.opendataapp.sportsfragment.database.SportEntity
+import com.ramotion.fluidslider.FluidSlider
 
 class SportsFragment : Fragment() {
 
@@ -64,6 +65,18 @@ class SportsFragment : Fragment() {
             sportsList.sortBy { it.name }
             adapter.notifyDataSetChanged()
         }
+
+        /*
+        // Slider
+        val max = 999
+        val min = 1
+        val total = max - min
+        val slider = view.findViewById<FluidSlider>(R.id.f_sportfluidSlider)
+        slider.positionListener = { pos -> slider.bubbleText = "${min + (total  * pos).toInt()}" }
+        slider.position = 0.3f
+        slider.startText ="$min"
+        slider.endText = "$max"
+        */
         return view
     }
 
