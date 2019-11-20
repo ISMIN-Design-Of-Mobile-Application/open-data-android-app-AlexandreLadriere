@@ -7,16 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ismin.opendataapp.R
 
 class SportsViewHolder(
-    rootView: View,
-    private val selectSport: (Int) -> Unit
+    rootView: View
 ) : RecyclerView.ViewHolder(rootView) {
 
-    var sportName: TextView = rootView.findViewById(R.id.sport_text_view)
-    private var container: ConstraintLayout = rootView.findViewById(R.id.sport_grid_view)
+    var sportName: TextView = rootView.findViewById(R.id.sport_text_box)
+    var container: ConstraintLayout = rootView.findViewById(R.id.sport_grid_view)
 
-    init {
-        container.setOnClickListener {
-            selectSport(adapterPosition)
-        }
-    }
 }
