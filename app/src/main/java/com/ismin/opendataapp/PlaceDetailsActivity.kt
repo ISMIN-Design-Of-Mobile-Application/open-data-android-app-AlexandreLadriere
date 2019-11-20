@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import com.ismin.opendataapp.placesfragment.Place
+import com.ismin.opendataapp.placesfragment.database.PlaceEntity
 
 @Suppress("CAST_NEVER_SUCCEEDS")
 class PlaceDetailsActivity : AppCompatActivity() {
@@ -14,7 +14,7 @@ class PlaceDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_details)
-        val place = intent.getSerializableExtra(Intent.EXTRA_TEXT) as Place
+        val place = intent.getSerializableExtra(Intent.EXTRA_TEXT) as PlaceEntity
 
         findViewById<TextView>(R.id.a_place_details_text_view_place_title).text = place.name
         findViewById<TextView>(R.id.a_place_details_text_view_place_address).text = place.address

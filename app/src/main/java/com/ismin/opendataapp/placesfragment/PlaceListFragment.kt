@@ -11,10 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ismin.opendataapp.R
+import com.ismin.opendataapp.placesfragment.database.PlaceEntity
 
 class PlaceListFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
-    private var placesList: ArrayList<Place> = ArrayList()
+    private var placesList: ArrayList<PlaceEntity> = ArrayList()
     private val adapter = PlacesAdapter(placesList, ::selectPlace)
 
     override fun onCreateView(
@@ -49,7 +50,7 @@ class PlaceListFragment : Fragment() {
         listener = null
     }
 
-    fun setPlacesList(placesList: ArrayList<Place>) {
+    fun setPlacesList(placesList: ArrayList<PlaceEntity>) {
         this.placesList.clear()
         this.placesList.addAll(placesList)
         adapter.notifyDataSetChanged()
@@ -65,7 +66,7 @@ class PlaceListFragment : Fragment() {
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteractionPlaceList(uri: Uri)
-        fun sendPlaceObject(place: Place)
+        fun sendPlaceObject(place: PlaceEntity)
     }
 
 }

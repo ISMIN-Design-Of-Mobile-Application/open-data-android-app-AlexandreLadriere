@@ -1,6 +1,7 @@
 package com.ismin.opendataapp.placesfragment.database
 
 import androidx.room.*
+import com.ismin.opendataapp.R
 import java.io.Serializable
 
 @Entity
@@ -12,8 +13,8 @@ data class PlaceEntity(
     val distance: String,
     val latitude: String,
     val longitude: String,
-    val website: String,
-    val image: Int
+    val website: String = "https://www.jcchevalier.fr/",
+    val image: Int = R.drawable.stade_velodrome
 ) : Serializable
 
 @Dao

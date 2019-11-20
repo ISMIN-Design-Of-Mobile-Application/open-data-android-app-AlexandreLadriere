@@ -19,8 +19,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.ismin.opendataapp.placesfragment.Place
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
+import com.ismin.opendataapp.placesfragment.database.PlaceEntity
 import com.ismin.opendataapp.sportsfragment.SportsFragment
 import com.ismin.opendataapp.sportsfragment.SportsService
 import com.ismin.opendataapp.sportsfragment.database.SportDAO
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
     private val sportsService = retrofit.create<SportsService>(SportsService::class.java)
     private val sportsList: ArrayList<SportEntity> = ArrayList()
-    private val placesList: ArrayList<Place> = ArrayList()
+    private val placesList: ArrayList<PlaceEntity> = ArrayList()
 
     private fun initiateSportsList() {
         sportsService.getAllSports()
@@ -115,7 +115,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         a_main_tabs.setupWithViewPager(a_main_view_pager)
 
         placesList.add(
-            Place(
+            PlaceEntity(
+                1,
                 "Orange Vélodrome",
                 "24 Rue du Commandant Guilbaud\n75016 Paris\nFrance",
                 "0.123",
@@ -124,7 +125,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             )
         )
         placesList.add(
-            Place(
+            PlaceEntity(
+                2,
                 "Stade Municipal de Melun",
                 "2 Rue Dorée\n77000 Melun\nFrance",
                 "0.077",
@@ -134,7 +136,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             )
         )
         placesList.add(
-            Place(
+            PlaceEntity(
+                3,
                 "Stadio Olimpico",
                 "Viale dei Gladiatori\n00135 Roma RM\nItaly",
                 "1023.193",
@@ -153,7 +156,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         initiateSportsList()
     }
 
-    override fun sendPlaceObject(place: Place) {
+    override fun sendPlaceObject(place: PlaceEntity) {
         val intent = Intent(this, PlaceDetailsActivity::class.java)
         intent.putExtra(Intent.EXTRA_TEXT, place)
         this.startActivity(intent)
