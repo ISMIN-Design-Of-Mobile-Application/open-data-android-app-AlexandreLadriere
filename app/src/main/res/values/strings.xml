@@ -27,4 +27,5 @@
     <string name="google_maps_key">AIzaSyDTvIgeeBFG2uXzuraR7TVbDs4TSZL_IGg</string>
     <string name="gps_off">GPS Offline</string>
     <string name="gps_off_message">This application need to use your GPS. Please turn on your GPS.</string>
+    <string name="search">Search</string>
 </resources>
