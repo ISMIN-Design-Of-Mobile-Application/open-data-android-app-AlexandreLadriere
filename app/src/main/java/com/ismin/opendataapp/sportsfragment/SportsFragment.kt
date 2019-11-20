@@ -7,23 +7,19 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.ismin.opendataapp.R
 import com.ismin.opendataapp.sportsfragment.database.SportEntity
-import com.ramotion.fluidslider.FluidSlider
 
 class SportsFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
-
     private var initSportsList: ArrayList<SportEntity> = ArrayList()
     private var sportsList: ArrayList<SportEntity> = ArrayList()
-
     private val adapter = SportsAdapter(sportsList, ::selectSport)
 
     override fun onCreateView(
@@ -33,12 +29,12 @@ class SportsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_sports, container, false)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_sports)
-        val layoutManager = LinearLayoutManager(context)
+        val layoutManager = GridLayoutManager(context, 4)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
         val searchInput = view.findViewById<TextInputEditText>(R.id.search_text_input_edit)
-        searchInput.setOnKeyListener { _, keyCode, _ ->
+        searchInput.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_NAVIGATE_NEXT) {
                 searchInput.isSelected = false
                 true
@@ -48,35 +44,16 @@ class SportsFragment : Fragment() {
         }
         searchInput.doAfterTextChanged {
             val searchInputText = searchInput.text.toString()
+            sportsList.clear()
             for (sport in initSportsList) {
-                if (sport.name.contains(searchInputText, ignoreCase = true) && !sportsList.contains(
-                        sport
-                    )
-                ) {
-                    sportsList.add(sport)
-                } else if (!sport.name.contains(
-                        searchInputText,
-                        ignoreCase = true
-                    ) && sportsList.contains(sport)
-                ) {
-                    sportsList.remove(sport)
+                if (sport.name.length >= searchInputText.length) {
+                    if (sport.name.contains(searchInputText, ignoreCase = true)) {
+                        sportsList.add(sport)
+                    }
                 }
             }
-            sportsList.sortBy { it.name }
             adapter.notifyDataSetChanged()
         }
-
-
-        // Slider
-        val max = 150
-        val min = 1
-        val total = max - min
-        val slider = view.findViewById<FluidSlider>(R.id.f_sport_fluid_slider)
-        slider.positionListener = { pos -> slider.bubbleText = "${min + (total  * pos).toInt()}" }
-        slider.position = 0.3f
-        slider.startText ="$min km"
-        slider.endText = "$max km"
-
         return view
     }
 
@@ -112,9 +89,8 @@ class SportsFragment : Fragment() {
         adapter.notifyDataSetChanged()
     }
 
-    private fun selectSport(index: Int) {
-        val sport = sportsList[index]
-        Toast.makeText(context, "You have selected $sport", Toast.LENGTH_LONG).show()
+    private fun selectSport(position: Int) {
+
     }
 
 }
