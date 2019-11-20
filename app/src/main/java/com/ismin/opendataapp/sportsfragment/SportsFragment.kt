@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.ismin.opendataapp.R
@@ -29,7 +29,7 @@ class SportsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_sports, container, false)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_sports)
-        val layoutManager = GridLayoutManager(context, 4)
+        val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 

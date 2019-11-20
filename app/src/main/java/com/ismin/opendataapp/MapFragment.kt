@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -21,6 +20,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var gMap: GoogleMap
     private var locationsList: MutableMap<String, LatLng> = mutableMapOf()
     private var isMapReady = false
+
+    //TODO: detect if whether or not the localisation is on
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,14 +63,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    private fun displayOnMap(key: String) {
-        val location = locationsList[key]
-        if (location != null) {
-            gMap.addMarker(MarkerOptions().position(location).title(key))
-            gMap.moveCamera(CameraUpdateFactory.newLatLng(location))
-        }
-    }
-
     private fun displayOnMap() {
         gMap.clear()
         for ((key, location) in locationsList) {
@@ -80,7 +73,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     fun addLocation(location: Location, name: String) {
         locationsList[name] = LatLng(location.latitude, location.longitude)
         if (isMapReady) {
-            displayOnMap(name)
+            displayOnMap()
         }
     }
 
@@ -88,7 +81,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         val key = "Current Location"
         locationsList[key] = LatLng(location.latitude, location.longitude)
         if (isMapReady) {
-            displayOnMap(key)
+            displayOnMap()
         }
     }
 }
