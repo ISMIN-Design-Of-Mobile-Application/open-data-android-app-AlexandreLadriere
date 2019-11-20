@@ -25,4 +25,6 @@
     <string name="close">CLOSE</string>
     <string name="title_activity_maps">Map</string>
     <string name="google_maps_key">AIzaSyDTvIgeeBFG2uXzuraR7TVbDs4TSZL_IGg</string>
+    <string name="gps_off">GPS Offline</string>
+    <string name="gps_off_message">This application need to use your GPS. Please turn on your GPS.</string>
 </resources>
