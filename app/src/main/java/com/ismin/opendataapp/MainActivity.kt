@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.location.GpsStatus
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -43,6 +44,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         .build()
 
     private lateinit var sportDAO: SportDAO
+    private lateinit var locationManager: LocationManager
 
     private val sportsFragment = SportsFragment()
     private val placesListFragment = PlaceListFragment()
@@ -99,7 +101,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
         sportDAO = SportDatabase.getAppDatabase(this).getSportDAO()
 
-        val locationManager: LocationManager =
+        locationManager =
             getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         locationManager.requestLocationUpdates(
@@ -146,6 +148,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
     override fun onResume() {
         super.onResume()
+        checkGpsStatus()
         checkConnectivity(this)
         initiateSportsList()
     }
@@ -181,6 +184,26 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             builder.create()
         }
         if (!isConnected) {
+            alertDialog?.show()
+        }
+    }
+
+    private fun checkGpsStatus() {
+        val gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val alertDialog: AlertDialog? = this.let {
+            val builder = AlertDialog.Builder(it)
+            builder.apply {
+                setPositiveButton(R.string.ok,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // User clicked OK button
+                    })
+            }
+            builder.setTitle(R.string.gps_off)
+            builder.setMessage(R.string.gps_off_message)
+            // Create the AlertDialog
+            builder.create()
+        }
+        if(!gpsStatus) {
             alertDialog?.show()
         }
     }
