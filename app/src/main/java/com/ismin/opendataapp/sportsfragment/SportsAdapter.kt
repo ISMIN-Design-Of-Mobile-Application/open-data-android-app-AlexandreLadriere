@@ -7,7 +7,7 @@ import com.ismin.opendataapp.R
 import com.ismin.opendataapp.sportsfragment.database.SportEntity
 
 class SportsAdapter(
-    private val icons: ArrayList<SportEntity>,
+    private val sportsList: ArrayList<SportEntity>,
     private val selectSport: (Int) -> Unit
 ) :
     RecyclerView.Adapter<SportsViewHolder>() {
@@ -17,16 +17,18 @@ class SportsAdapter(
             R.layout.recycler_view_sports_item, parent,
             false
         )
-        return SportsViewHolder(row, selectSport)
+        return SportsViewHolder(row)
     }
 
     override fun onBindViewHolder(viewholder: SportsViewHolder, position: Int) {
-        val (id, name) = this.icons[position]
-
+        val (id, name) = this.sportsList[position]
         viewholder.sportName.text = name
+        viewholder.sportName.setOnClickListener {
+            selectSport(position)
+        }
     }
 
     override fun getItemCount(): Int {
-        return this.icons.size
+        return this.sportsList.size
     }
 }

@@ -7,6 +7,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,8 +19,10 @@ import com.ismin.opendataapp.sportsfragment.database.SportEntity
 class SportsFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
+
     private var initSportsList: ArrayList<SportEntity> = ArrayList()
     private var sportsList: ArrayList<SportEntity> = ArrayList()
+
     private val adapter = SportsAdapter(sportsList, ::selectSport)
 
     override fun onCreateView(
@@ -34,7 +37,7 @@ class SportsFragment : Fragment() {
         recyclerView.adapter = adapter
 
         val searchInput = view.findViewById<TextInputEditText>(R.id.search_text_input_edit)
-        searchInput.setOnKeyListener { v, keyCode, event ->
+        searchInput.setOnKeyListener { _, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_NAVIGATE_NEXT) {
                 searchInput.isSelected = false
                 true
@@ -44,14 +47,21 @@ class SportsFragment : Fragment() {
         }
         searchInput.doAfterTextChanged {
             val searchInputText = searchInput.text.toString()
-            sportsList.clear()
             for (sport in initSportsList) {
-                if (sport.name.length >= searchInputText.length) {
-                    if (sport.name.contains(searchInputText, ignoreCase = true)) {
-                        sportsList.add(sport)
-                    }
+                if (sport.name.contains(searchInputText, ignoreCase = true) && !sportsList.contains(
+                        sport
+                    )
+                ) {
+                    sportsList.add(sport)
+                } else if (!sport.name.contains(
+                        searchInputText,
+                        ignoreCase = true
+                    ) && sportsList.contains(sport)
+                ) {
+                    sportsList.remove(sport)
                 }
             }
+            sportsList.sortBy { it.name }
             adapter.notifyDataSetChanged()
         }
         return view
@@ -89,8 +99,9 @@ class SportsFragment : Fragment() {
         adapter.notifyDataSetChanged()
     }
 
-    private fun selectSport(position: Int) {
-
+    private fun selectSport(index: Int) {
+        val sport = sportsList[index]
+        Toast.makeText(context, "You have selected $sport", Toast.LENGTH_LONG).show()
     }
 
 }
