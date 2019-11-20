@@ -4,8 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ismin.opendataapp.R
+import com.ismin.opendataapp.placesfragment.database.PlaceEntity
 
-class PlacesAdapter(private val places: ArrayList<Place>, private val selectPlace: (Int) -> Unit) :
+class PlacesAdapter(private val places: ArrayList<PlaceEntity>, private val selectPlace: (Int) -> Unit) :
     RecyclerView.Adapter<PlacesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlacesViewHolder {
@@ -15,7 +16,7 @@ class PlacesAdapter(private val places: ArrayList<Place>, private val selectPlac
     }
 
     override fun onBindViewHolder(holder: PlacesViewHolder, position: Int) {
-        val (name, address, distance, latitude, longitude, website, image) = this.places[position]
+        val (id, name, address, distance, latitude, longitude, website, image) = this.places[position]
         holder.placeAddress.text = address
         holder.placeDistance.text = distance + " km"
         holder.placeName.text = name
