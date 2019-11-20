@@ -66,17 +66,17 @@ class SportsFragment : Fragment() {
             adapter.notifyDataSetChanged()
         }
 
-        /*
+
         // Slider
-        val max = 999
+        val max = 150
         val min = 1
         val total = max - min
-        val slider = view.findViewById<FluidSlider>(R.id.f_sportfluidSlider)
+        val slider = view.findViewById<FluidSlider>(R.id.f_fluid_slider)
         slider.positionListener = { pos -> slider.bubbleText = "${min + (total  * pos).toInt()}" }
         slider.position = 0.3f
-        slider.startText ="$min"
-        slider.endText = "$max"
-        */
+        slider.startText ="$min km"
+        slider.endText = "$max km"
+
         return view
     }
 
