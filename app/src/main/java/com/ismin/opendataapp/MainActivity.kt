@@ -250,9 +250,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onFragmentInteractionSports(list: ArrayList<SportEntity>) {
+    override fun onFragmentInteractionSports(list: ArrayList<SportEntity>, distance: Int) {
         mainViewPager.currentItem = 1
-        placesListFragment.setSelectedSportsList(list)
+        placesListFragment.setSelectedSportsList(list, distance)
     }
 
     override fun onFragmentInteractionPlaceList(uri: Uri) {

@@ -19,6 +19,7 @@ class PlaceListFragment : Fragment() {
     private var placesList: ArrayList<PlaceEntity> = ArrayList()
     private val adapter = PlacesAdapter(placesList, ::selectPlace)
     private val selectedSportsList: ArrayList<SportEntity> = ArrayList()
+    private var distance: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,9 +72,10 @@ class PlaceListFragment : Fragment() {
         fun sendPlaceObject(place: PlaceEntity)
     }
 
-    fun setSelectedSportsList(list: ArrayList<SportEntity>) {
+    fun setSelectedSportsList(list: ArrayList<SportEntity>, distance: Int) {
         this.selectedSportsList.clear()
         this.selectedSportsList.addAll(list)
+        this.distance = distance
     }
 
 }

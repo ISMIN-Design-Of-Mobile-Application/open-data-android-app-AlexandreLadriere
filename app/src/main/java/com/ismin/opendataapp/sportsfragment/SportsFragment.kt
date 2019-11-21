@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.ismin.opendataapp.R
 import com.ismin.opendataapp.sportsfragment.database.SportEntity
+import com.ramotion.fluidslider.FluidSlider
 
 class SportsFragment : Fragment() {
 
@@ -23,12 +24,19 @@ class SportsFragment : Fragment() {
     private var sportsList: ArrayList<SportEntity> = ArrayList()
 
     private val adapter = SportsAdapter(sportsList, ::selectSport)
+    private val max = 100
+    private val min = 0
+    private val total = max - min
+
+    private lateinit var slider: FluidSlider
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_sports, container, false)
+
+        slider = view.findViewById(R.id.f_fluid_slider)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view_sports)
         val layoutManager = LinearLayoutManager(context)
@@ -71,8 +79,12 @@ class SportsFragment : Fragment() {
                     selectedSports.add(it)
                 }
             }
-            listener?.onFragmentInteractionSports(selectedSports)
+            listener?.onFragmentInteractionSports(selectedSports, slider.bubbleText!!.toInt())
         }
+        slider.positionListener = { pos -> slider.bubbleText = "${min + (total * pos).toInt()}" }
+        slider.position = 0.3f
+        slider.startText = "$min km"
+        slider.endText = "$max km"
         return view
     }
 
@@ -91,7 +103,7 @@ class SportsFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        fun onFragmentInteractionSports(list: ArrayList<SportEntity>)
+        fun onFragmentInteractionSports(list: ArrayList<SportEntity>, distance: Int)
     }
 
     fun setSportsList(sportsList: ArrayList<SportEntity>) {
