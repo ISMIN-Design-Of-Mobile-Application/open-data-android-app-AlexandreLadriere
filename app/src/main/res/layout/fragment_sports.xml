@@ -12,14 +12,14 @@
         android:id="@+id/recycler_view_sports"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="41dp"
         android:background="@drawable/custom_rectangle_white_cr10"
-        app:layout_constraintBottom_toTopOf="@+id/f_sport_button_search"
+        app:layout_constraintBottom_toBottomOf="@+id/f_fluid_slider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
@@ -41,6 +41,21 @@
             android:hint="@android:string/search_go"
             android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <com.ramotion.fluidslider.FluidSlider
+        android:id="@+id/f_fluid_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/f_sport_button_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:size="small"
+        app:bar_color="@color/colorPrimary" />
 
     <Button
         android:id="@+id/f_sport_button_search"
