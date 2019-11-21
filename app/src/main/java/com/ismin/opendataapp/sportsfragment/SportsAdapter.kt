@@ -8,7 +8,7 @@ import com.ismin.opendataapp.sportsfragment.database.SportEntity
 
 class SportsAdapter(
     private val sportsList: ArrayList<SportEntity>,
-    private val selectSport: (Int) -> Unit
+    private val selectSport: (Int, Boolean) -> Unit
 ) :
     RecyclerView.Adapter<SportsViewHolder>() {
 
@@ -23,9 +23,10 @@ class SportsAdapter(
     override fun onBindViewHolder(viewholder: SportsViewHolder, position: Int) {
         val (id, name) = this.sportsList[position]
         viewholder.sportName.text = name
-        viewholder.sportName.setOnClickListener {
-            selectSport(position)
+        viewholder.sportName.setOnCheckedChangeListener { buttonView, isChecked ->
+            selectSport(id, isChecked)
         }
+        viewholder.sportName.isChecked = this.sportsList[position].isEnabled
     }
 
     override fun getItemCount(): Int {

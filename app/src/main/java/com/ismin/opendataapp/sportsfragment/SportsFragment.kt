@@ -7,7 +7,6 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -99,9 +98,12 @@ class SportsFragment : Fragment() {
         adapter.notifyDataSetChanged()
     }
 
-    private fun selectSport(index: Int) {
-        val sport = sportsList[index]
-        Toast.makeText(context, "You have selected $sport", Toast.LENGTH_LONG).show()
+    private fun selectSport(id: Int, isChecked: Boolean) {
+        initSportsList.forEach {
+            if (it.id == id) {
+                it.isEnabled = isChecked
+                return
+            }
+        }
     }
-
 }

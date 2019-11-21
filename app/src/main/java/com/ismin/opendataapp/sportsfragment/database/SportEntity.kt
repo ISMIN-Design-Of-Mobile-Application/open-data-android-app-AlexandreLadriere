@@ -8,7 +8,10 @@ data class SportEntity(
     @PrimaryKey
     val id: Int,
     val name: String
-) : Serializable
+) : Serializable {
+    @Ignore
+    var isEnabled: Boolean = false
+}
 
 @Dao
 interface SportDAO {
