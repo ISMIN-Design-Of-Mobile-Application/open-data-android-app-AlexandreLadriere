@@ -20,18 +20,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.viewpager.widget.ViewPager
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
+import com.ismin.opendataapp.placesfragment.PlaceService
 import com.ismin.opendataapp.placesfragment.database.PlaceEntity
 import com.ismin.opendataapp.sportsfragment.SportsFragment
 import com.ismin.opendataapp.sportsfragment.SportsService
 import com.ismin.opendataapp.sportsfragment.database.SportDAO
 import com.ismin.opendataapp.sportsfragment.database.SportDatabase
 import com.ismin.opendataapp.sportsfragment.database.SportEntity
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
@@ -54,6 +58,27 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     private val sportsService = retrofit.create<SportsService>(SportsService::class.java)
     private val sportsList: ArrayList<SportEntity> = ArrayList()
     private val placesList: ArrayList<PlaceEntity> = ArrayList()
+
+    // Test API
+    private var disposable: Disposable? = null
+    private val PlaceServe by lazy {
+        PlaceService.create()
+    }
+
+    private fun beginSearch(longitude: String, latitude: String, radius: String, sportCode: String) {
+        disposable = PlaceServe.getPlaces("$longitude,$latitude", radius, sportCode)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result -> Toast.makeText(this, "${result.data.features[0].geometry.coordinates[0]}", Toast.LENGTH_LONG).show() },
+                { error -> Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show() }
+            )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disposable?.dispose()
+    }
 
     private fun initiateSportsList() {
         sportsService.getAllSports()
@@ -149,6 +174,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             )
         )
         placesListFragment.setPlacesList(placesList)
+        beginSearch("-73.582", "45.511", "99", "175")
     }
 
     override fun onResume() {
