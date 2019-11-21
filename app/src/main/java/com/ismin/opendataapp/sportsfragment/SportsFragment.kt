@@ -1,12 +1,12 @@
 package com.ismin.opendataapp.sportsfragment
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -63,12 +63,17 @@ class SportsFragment : Fragment() {
             sportsList.sortBy { it.name }
             adapter.notifyDataSetChanged()
         }
+        val searchButton = view.findViewById<Button>(R.id.f_sport_button_search)
+        searchButton.setOnClickListener {
+            val selectedSports = ArrayList<SportEntity>()
+            initSportsList.forEach {
+                if (it.isEnabled) {
+                    selectedSports.add(it)
+                }
+            }
+            listener?.onFragmentInteractionSports(selectedSports)
+        }
         return view
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteractionSports(uri)
     }
 
     override fun onAttach(context: Context) {
@@ -86,8 +91,7 @@ class SportsFragment : Fragment() {
     }
 
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteractionSports(uri: Uri)
+        fun onFragmentInteractionSports(list: ArrayList<SportEntity>)
     }
 
     fun setSportsList(sportsList: ArrayList<SportEntity>) {

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.location.GpsStatus
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -19,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.viewpager.widget.ViewPager
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
 import com.ismin.opendataapp.placesfragment.database.PlaceEntity
 import com.ismin.opendataapp.sportsfragment.SportsFragment
@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         .baseUrl(SERVER_BASE_URL)
         .build()
 
+    private lateinit var mainViewPager: ViewPager
     private lateinit var sportDAO: SportDAO
     private lateinit var locationManager: LocationManager
 
@@ -82,6 +83,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mainViewPager = findViewById<ViewPager>(R.id.a_main_view_pager)
         setSupportActionBar(a_main_toolbar)
 
         val requestCode = 0
@@ -248,8 +250,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun onFragmentInteractionSports(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onFragmentInteractionSports(list: ArrayList<SportEntity>) {
+        mainViewPager.currentItem = 1
+        placesListFragment.setSelectedSportsList(list)
     }
 
     override fun onFragmentInteractionPlaceList(uri: Uri) {

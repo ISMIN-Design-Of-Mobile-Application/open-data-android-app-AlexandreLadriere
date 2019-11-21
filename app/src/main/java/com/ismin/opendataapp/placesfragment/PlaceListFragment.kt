@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ismin.opendataapp.R
 import com.ismin.opendataapp.placesfragment.database.PlaceEntity
+import com.ismin.opendataapp.sportsfragment.database.SportEntity
 
 class PlaceListFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
     private var placesList: ArrayList<PlaceEntity> = ArrayList()
     private val adapter = PlacesAdapter(placesList, ::selectPlace)
+    private val selectedSportsList: ArrayList<SportEntity> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +69,11 @@ class PlaceListFragment : Fragment() {
         // TODO: Update argument type and name
         fun onFragmentInteractionPlaceList(uri: Uri)
         fun sendPlaceObject(place: PlaceEntity)
+    }
+
+    fun setSelectedSportsList(list: ArrayList<SportEntity>) {
+        this.selectedSportsList.clear()
+        this.selectedSportsList.addAll(list)
     }
 
 }
