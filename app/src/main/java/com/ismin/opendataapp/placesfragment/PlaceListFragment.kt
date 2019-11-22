@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -62,7 +61,6 @@ class PlaceListFragment : Fragment() {
     private fun selectPlace(position: Int) {
         // TODO: Implement that function after creating the third fragment
         val placeToDisplay = this.placesList[position]
-        Toast.makeText(context, "$placeToDisplay", Toast.LENGTH_SHORT).show()
         listener?.sendPlaceObject(placeToDisplay)
     }
 

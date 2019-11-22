@@ -20,18 +20,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.viewpager.widget.ViewPager
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
+import com.ismin.opendataapp.placesfragment.PlaceModel
+import com.ismin.opendataapp.placesfragment.PlaceService
 import com.ismin.opendataapp.placesfragment.database.PlaceEntity
 import com.ismin.opendataapp.sportsfragment.SportsFragment
 import com.ismin.opendataapp.sportsfragment.SportsService
 import com.ismin.opendataapp.sportsfragment.database.SportDAO
 import com.ismin.opendataapp.sportsfragment.database.SportDatabase
 import com.ismin.opendataapp.sportsfragment.database.SportEntity
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
@@ -55,28 +60,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     private val sportsList: ArrayList<SportEntity> = ArrayList()
     private val placesList: ArrayList<PlaceEntity> = ArrayList()
 
-    private fun initiateSportsList() {
-        sportsService.getAllSports()
-            .enqueue(object : Callback<List<SportEntity>> {
-                override fun onResponse(
-                    call: Call<List<SportEntity>>, response: Response<List<SportEntity>>
-                ) {
-                    val allSports = response.body()
-                    if (allSports != null) {
-                        allSports.forEach { sportEntity: SportEntity ->
-                            sportDAO.insert(sportEntity)
-                        }
-                        sportsList.clear()
-                        sportsList.addAll(allSports)
-                        sportsList.sortBy { it.name }
-                        sportsFragment.setSportsList(sportsList)
-                    }
-                }
-
-                override fun onFailure(call: Call<List<SportEntity>>, t: Throwable) {
-                    Toast.makeText(this@MainActivity, "Error: $t", Toast.LENGTH_LONG).show()
-                }
-            })
+    private var disposable: Disposable? = null
+    private val PlaceServe by lazy {
+        PlaceService.create()
     }
 
     @SuppressLint("MissingPermission")
@@ -115,40 +101,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
-
-        placesList.add(
-            PlaceEntity(
-                1,
-                "Orange Vélodrome",
-                "24 Rue du Commandant Guilbaud\n75016 Paris\nFrance",
-                "0.123",
-                "45.123",
-                "54.123"
-            )
-        )
-        placesList.add(
-            PlaceEntity(
-                2,
-                "Stade Municipal de Melun",
-                "2 Rue Dorée\n77000 Melun\nFrance",
-                "0.077",
-                "77.123",
-                "12.123",
-                image = R.drawable.stade_municipal_melun
-            )
-        )
-        placesList.add(
-            PlaceEntity(
-                3,
-                "Stadio Olimpico",
-                "Viale dei Gladiatori\n00135 Roma RM\nItaly",
-                "1023.193",
-                "77.123",
-                "12.123",
-                image = R.drawable.stadio_olimpico
-            )
-        )
-        placesListFragment.setPlacesList(placesList)
+        searchPlaces("-73.582", "45.511", "99", "175")
     }
 
     override fun onResume() {
@@ -156,6 +109,70 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         checkGpsStatus()
         checkConnectivity(this)
         initiateSportsList()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disposable?.dispose()
+    }
+
+    private fun searchPlaces(longitude: String, latitude: String, radius: String, sportCode: String) {
+        disposable = PlaceServe.getPlaces("$longitude,$latitude", radius, sportCode)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result -> fillPlaceListFromResult(result) },
+                { error -> Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show() }
+            )
+    }
+
+    private fun fillPlaceListFromResult(result: PlaceModel.Result) {
+        placesList.clear()
+        // TODO: boucle for pour result.count et pas juste pour data.features.size
+        for(i in 0 until result.data.features.size) {
+            var website = "https://www.jcchevalier.fr/"
+            if(result.data.features[i].properties.contact_details.website != null) {
+                website = result.data.features[i].properties.contact_details.website
+            }
+
+            placesList.add(
+                PlaceEntity(
+                    i,
+                    result.data.features[i].properties.name,
+                    "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}\n${result.data.features[i].properties.address_components.country}\n${result.data.features[i].properties.address_components.province}",
+                    result.data.features[i].properties.proximity.toString(),
+                    result.data.features[i].geometry.coordinates[0].toString(),
+                    result.data.features[i].geometry.coordinates[1].toString(),
+                    website,
+                    image = R.drawable.stade_velodrome // TODO: Modifier image
+                )
+            )
+        }
+        placesListFragment.setPlacesList(placesList)
+    }
+
+    private fun initiateSportsList() {
+        sportsService.getAllSports()
+            .enqueue(object : Callback<List<SportEntity>> {
+                override fun onResponse(
+                    call: Call<List<SportEntity>>, response: Response<List<SportEntity>>
+                ) {
+                    val allSports = response.body()
+                    if (allSports != null) {
+                        allSports.forEach { sportEntity: SportEntity ->
+                            sportDAO.insert(sportEntity)
+                        }
+                        sportsList.clear()
+                        sportsList.addAll(allSports)
+                        sportsList.sortBy { it.name }
+                        sportsFragment.setSportsList(sportsList)
+                    }
+                }
+
+                override fun onFailure(call: Call<List<SportEntity>>, t: Throwable) {
+                    Toast.makeText(this@MainActivity, "Error: $t", Toast.LENGTH_LONG).show()
+                }
+            })
     }
 
     override fun sendPlaceObject(place: PlaceEntity) {
@@ -239,7 +256,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             R.id.action_information -> {
                 val intent = Intent(this, InfoActivity::class.java)
                 this.startActivity(intent)
-                //Toast.makeText(this, "Information activity not implemented yet", Toast.LENGTH_SHORT).show()
                 true
             }
             else -> super.onOptionsItemSelected(item)
