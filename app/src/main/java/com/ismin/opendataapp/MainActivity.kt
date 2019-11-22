@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.viewpager.widget.ViewPager
 import com.ismin.opendataapp.placesfragment.PlaceListFragment
+import com.ismin.opendataapp.placesfragment.PlaceModel
 import com.ismin.opendataapp.placesfragment.PlaceService
 import com.ismin.opendataapp.placesfragment.database.PlaceEntity
 import com.ismin.opendataapp.sportsfragment.SportsFragment
@@ -59,25 +60,44 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     private val sportsList: ArrayList<SportEntity> = ArrayList()
     private val placesList: ArrayList<PlaceEntity> = ArrayList()
 
-    // Test API
     private var disposable: Disposable? = null
     private val PlaceServe by lazy {
         PlaceService.create()
     }
 
-    private fun beginSearch(longitude: String, latitude: String, radius: String, sportCode: String) {
+    private fun searchPlaces(longitude: String, latitude: String, radius: String, sportCode: String) {
         disposable = PlaceServe.getPlaces("$longitude,$latitude", radius, sportCode)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { result -> Toast.makeText(this, "${result.data.features[0].geometry.coordinates[0]}", Toast.LENGTH_LONG).show() },
+                { result -> fillPlaceListFromResult(result) },
                 { error -> Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show() }
             )
     }
 
-    override fun onPause() {
-        super.onPause()
-        disposable?.dispose()
+    private fun fillPlaceListFromResult(result: PlaceModel.Result) {
+        placesList.clear()
+        // TODO: boucle for pour result.count et pas juste pour data.features.size
+        for(i in 0 until result.data.features.size) {
+            var website = "https://www.jcchevalier.fr/"
+            if(result.data.features[i].properties.contact_details.website != null) {
+                website = result.data.features[i].properties.contact_details.website
+            }
+
+            placesList.add(
+                PlaceEntity(
+                    i,
+                    result.data.features[i].properties.name,
+                    "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}\n${result.data.features[i].properties.address_components.country}\n${result.data.features[i].properties.address_components.province}",
+                    result.data.features[i].properties.proximity.toString(),
+                    result.data.features[i].geometry.coordinates[0].toString(),
+                    result.data.features[i].geometry.coordinates[1].toString(),
+                    website,
+                    image = R.drawable.stade_velodrome // TODO: Modifier image
+                )
+            )
+        }
+        placesListFragment.setPlacesList(placesList)
     }
 
     private fun initiateSportsList() {
@@ -140,41 +160,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
-
-        placesList.add(
-            PlaceEntity(
-                1,
-                "Orange Vélodrome",
-                "24 Rue du Commandant Guilbaud\n75016 Paris\nFrance",
-                "0.123",
-                "45.123",
-                "54.123"
-            )
-        )
-        placesList.add(
-            PlaceEntity(
-                2,
-                "Stade Municipal de Melun",
-                "2 Rue Dorée\n77000 Melun\nFrance",
-                "0.077",
-                "77.123",
-                "12.123",
-                image = R.drawable.stade_municipal_melun
-            )
-        )
-        placesList.add(
-            PlaceEntity(
-                3,
-                "Stadio Olimpico",
-                "Viale dei Gladiatori\n00135 Roma RM\nItaly",
-                "1023.193",
-                "77.123",
-                "12.123",
-                image = R.drawable.stadio_olimpico
-            )
-        )
-        placesListFragment.setPlacesList(placesList)
-        beginSearch("-73.582", "45.511", "99", "175")
+        searchPlaces("-73.582", "45.511", "99", "175")
     }
 
     override fun onResume() {
@@ -182,6 +168,11 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         checkGpsStatus()
         checkConnectivity(this)
         initiateSportsList()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disposable?.dispose()
     }
 
     override fun sendPlaceObject(place: PlaceEntity) {
@@ -265,7 +256,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             R.id.action_information -> {
                 val intent = Intent(this, InfoActivity::class.java)
                 this.startActivity(intent)
-                //Toast.makeText(this, "Information activity not implemented yet", Toast.LENGTH_SHORT).show()
                 true
             }
             else -> super.onOptionsItemSelected(item)
