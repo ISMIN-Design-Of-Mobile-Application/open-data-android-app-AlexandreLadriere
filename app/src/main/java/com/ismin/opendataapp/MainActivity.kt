@@ -65,6 +65,57 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         PlaceService.create()
     }
 
+    @SuppressLint("MissingPermission")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        mainViewPager = findViewById<ViewPager>(R.id.a_main_view_pager)
+        setSupportActionBar(a_main_toolbar)
+
+        val requestCode = 0
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            requestCode
+        )
+
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+        viewPagerAdapter.addFragment(sportsFragment, "Sports")
+        viewPagerAdapter.addFragment(placesListFragment, "Place List")
+        viewPagerAdapter.addFragment(mapFragment, "Map")
+
+        sportDAO = SportDatabase.getAppDatabase(this).getSportDAO()
+
+        locationManager =
+            getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        locationManager.requestLocationUpdates(
+            LocationManager.NETWORK_PROVIDER,
+            0,
+            0f,
+            locationListener
+        )
+
+        a_main_view_pager.adapter = viewPagerAdapter
+        a_main_tabs.setupWithViewPager(a_main_view_pager)
+        searchPlaces("-73.582", "45.511", "99", "175")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkGpsStatus()
+        checkConnectivity(this)
+        initiateSportsList()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disposable?.dispose()
+    }
+
     private fun searchPlaces(longitude: String, latitude: String, radius: String, sportCode: String) {
         disposable = PlaceServe.getPlaces("$longitude,$latitude", radius, sportCode)
             .subscribeOn(Schedulers.io())
@@ -122,57 +173,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                     Toast.makeText(this@MainActivity, "Error: $t", Toast.LENGTH_LONG).show()
                 }
             })
-    }
-
-    @SuppressLint("MissingPermission")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        mainViewPager = findViewById<ViewPager>(R.id.a_main_view_pager)
-        setSupportActionBar(a_main_toolbar)
-
-        val requestCode = 0
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(
-                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION
-            ),
-            requestCode
-        )
-
-        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-        viewPagerAdapter.addFragment(sportsFragment, "Sports")
-        viewPagerAdapter.addFragment(placesListFragment, "Place List")
-        viewPagerAdapter.addFragment(mapFragment, "Map")
-
-        sportDAO = SportDatabase.getAppDatabase(this).getSportDAO()
-
-        locationManager =
-            getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        locationManager.requestLocationUpdates(
-            LocationManager.NETWORK_PROVIDER,
-            0,
-            0f,
-            locationListener
-        )
-
-        a_main_view_pager.adapter = viewPagerAdapter
-        a_main_tabs.setupWithViewPager(a_main_view_pager)
-        searchPlaces("-73.582", "45.511", "99", "175")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        checkGpsStatus()
-        checkConnectivity(this)
-        initiateSportsList()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        disposable?.dispose()
     }
 
     override fun sendPlaceObject(place: PlaceEntity) {
