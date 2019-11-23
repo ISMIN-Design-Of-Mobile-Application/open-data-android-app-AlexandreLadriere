@@ -13,9 +13,10 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 
-class MapFragment : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
 
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var gMap: GoogleMap
@@ -38,6 +39,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
         isMapReady = true
+        gMap.setOnInfoWindowClickListener(this)
+
+    }
+
+    override fun onInfoWindowClick(p0: Marker?) {
+        Toast.makeText(context, p0?.title.toString(), Toast.LENGTH_LONG).show()
     }
 
     override fun onAttach(context: Context) {
