@@ -40,7 +40,10 @@
             android:textSize="28sp"
             android:textColor="@color/colorBlack"
             android:textAlignment="center"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginEnd="8dp"/>
 
         <TextView
             android:id="@+id/a_place_details_text_view_place_distance"
