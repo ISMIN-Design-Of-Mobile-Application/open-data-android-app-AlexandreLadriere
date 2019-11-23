@@ -144,7 +144,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 PlaceEntity(
                     i,
                     tmpLocation.provider,
-                    "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}\n${result.data.features[i].properties.address_components.country}\n${result.data.features[i].properties.address_components.province}",
+                    "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}, " +
+                            "${result.data.features[i].properties.address_components.province}\n${result.data.features[i].properties.address_components.country}",
                     result.data.features[i].properties.proximity.toString(),
                     tmpLocation.longitude.toString(),
                     tmpLocation.latitude.toString(),
@@ -255,7 +256,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     override fun onFragmentInteractionSports(list: ArrayList<SportEntity>, distance: Int) {
         placesList.clear()
         for(i in 0 until list.size) {
-            searchPlaces(currentLongitude.toString(), currentLatitude.toString(), distance.toString(), list[i].id.toString())
+            // searchPlaces(currentLongitude.toString(), currentLatitude.toString(), distance.toString(), list[i].id.toString())
+            // Test
+            searchPlaces("-73.582", "45.511", distance.toString(), list[i].id.toString())
         }
         mainViewPager.currentItem = 1
         // I (Alex) don't know the purpose of the following function
