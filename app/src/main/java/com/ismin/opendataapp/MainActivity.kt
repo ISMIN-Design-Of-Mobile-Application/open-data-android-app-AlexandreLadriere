@@ -23,6 +23,7 @@ import com.ismin.opendataapp.placesfragment.PlaceListFragment
 import com.ismin.opendataapp.placesfragment.PlaceModel
 import com.ismin.opendataapp.placesfragment.PlaceService
 import com.ismin.opendataapp.placesfragment.database.PlaceEntity
+import com.ismin.opendataapp.placesfragment.photoreference.PhotoReferenceService
 import com.ismin.opendataapp.sportsfragment.SportsFragment
 import com.ismin.opendataapp.sportsfragment.SportsService
 import com.ismin.opendataapp.sportsfragment.database.SportDAO
@@ -65,6 +66,20 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     private var disposable: Disposable? = null
     private val PlaceServe by lazy {
         PlaceService.create()
+    }
+    private val PhotoReferenceServe by lazy {
+        PhotoReferenceService.create()
+    }
+
+    private fun searchPhotoReference(placeName: String) {
+        disposable =
+            PhotoReferenceServe.getPhotoReferenceFromName(placeName)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { result -> Toast.makeText(this, "${result.candidates[0].photos[0].photo_reference}", Toast.LENGTH_LONG).show() },
+                    { error -> Toast.makeText(this, error.message, Toast.LENGTH_LONG).show() }
+                )
     }
 
     @SuppressLint("MissingPermission")
@@ -139,7 +154,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             // Latitude and longitude need to be inverted here !
             tmpLocation.longitude = result.data.features[i].geometry.coordinates[0]
             tmpLocation.latitude = result.data.features[i].geometry.coordinates[1]
-
+            //searchPhotoReference(tmpLocation.provider)
             placesList.add(
                 PlaceEntity(
                     i,
@@ -256,6 +271,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         placesList.clear()
         for(i in 0 until list.size) {
             searchPlaces(currentLongitude.toString(), currentLatitude.toString(), distance.toString(), list[i].id.toString())
+            //TEST
+            //searchPlaces("-73.582", "45.511", distance.toString(), list[i].id.toString())
         }
         mainViewPager.currentItem = 1
         // I (Alex) don't know the purpose of the following function
