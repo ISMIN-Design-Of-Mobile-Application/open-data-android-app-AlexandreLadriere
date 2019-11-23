@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                     tmpLocation.provider,
                     "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}, " +
                             "${result.data.features[i].properties.address_components.province}\n${result.data.features[i].properties.address_components.country}",
-                    result.data.features[i].properties.proximity.toString(),
+                    String.format("%.3f", result.data.features[i].properties.proximity),
                     tmpLocation.longitude.toString(),
                     tmpLocation.latitude.toString(),
                     website,
