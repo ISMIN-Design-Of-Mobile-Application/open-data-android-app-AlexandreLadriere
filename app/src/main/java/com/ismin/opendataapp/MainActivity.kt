@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     private lateinit var mainViewPager: ViewPager
     private lateinit var sportDAO: SportDAO
     private lateinit var locationManager: LocationManager
+    private var currentLatitude: Double = 0.0
+    private var currentLongitude: Double = 0.0
 
     private val sportsFragment = SportsFragment()
     private val placesListFragment = PlaceListFragment()
@@ -101,7 +103,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
         a_main_view_pager.adapter = viewPagerAdapter
         a_main_tabs.setupWithViewPager(a_main_view_pager)
-        searchPlaces("-73.582", "45.511", "99", "175")
     }
 
     override fun onResume() {
@@ -127,7 +128,6 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     }
 
     private fun fillPlaceListFromResult(result: PlaceModel.Result) {
-        placesList.clear()
         // TODO: boucle for pour result.count et pas juste pour data.features.size
         for(i in 0 until result.data.features.size) {
             var website = "https://www.jcchevalier.fr/"
@@ -135,20 +135,27 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 website = result.data.features[i].properties.contact_details.website
             }
 
+            val tmpLocation = Location(result.data.features[i].properties.name)
+            // Latitude and longitude need to be inverted here !
+            tmpLocation.longitude = result.data.features[i].geometry.coordinates[0]
+            tmpLocation.latitude = result.data.features[i].geometry.coordinates[1]
+
             placesList.add(
                 PlaceEntity(
                     i,
-                    result.data.features[i].properties.name,
+                    tmpLocation.provider,
                     "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}\n${result.data.features[i].properties.address_components.country}\n${result.data.features[i].properties.address_components.province}",
                     result.data.features[i].properties.proximity.toString(),
-                    result.data.features[i].geometry.coordinates[0].toString(),
-                    result.data.features[i].geometry.coordinates[1].toString(),
+                    tmpLocation.longitude.toString(),
+                    tmpLocation.latitude.toString(),
                     website,
                     image = R.drawable.stade_velodrome // TODO: Modifier image
                 )
             )
+            mapFragment.addLocation(tmpLocation, tmpLocation.provider)
         }
         placesListFragment.setPlacesList(placesList)
+        Toast.makeText(this, "${result.count} results !", Toast.LENGTH_LONG).show()
     }
 
     private fun initiateSportsList() {
@@ -230,6 +237,46 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_information -> {
+                val intent = Intent(this, InfoActivity::class.java)
+                this.startActivity(intent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onFragmentInteractionMap(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onFragmentInteractionSports(list: ArrayList<SportEntity>, distance: Int) {
+        placesList.clear()
+        for(i in 0 until list.size) {
+            searchPlaces(currentLongitude.toString(), currentLatitude.toString(), distance.toString(), list[i].id.toString())
+        }
+        mainViewPager.currentItem = 1
+        // I (Alex) don't know the purpose of the following function
+        //placesListFragment.setSelectedSportsList(list, distance)
+    }
+
+    override fun onFragmentInteractionPlaceList(uri: Uri) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            currentLatitude = location!!.latitude
+            currentLongitude = location!!.longitude
+            mapFragment.setActualLocation(location)
+        }
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
+
     private fun hideSystemUI() {
         // Enables regular immersive mode.
         // For "lean back" mode, remove SYSTEM_UI_FLAG_IMMERSIVE.
@@ -251,41 +298,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_information -> {
-                val intent = Intent(this, InfoActivity::class.java)
-                this.startActivity(intent)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    override fun onFragmentInteractionMap(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onFragmentInteractionSports(list: ArrayList<SportEntity>, distance: Int) {
-        mainViewPager.currentItem = 1
-        placesListFragment.setSelectedSportsList(list, distance)
-    }
-
-    override fun onFragmentInteractionPlaceList(uri: Uri) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) hideSystemUI()
     }
-
-    private val locationListener: LocationListener = object : LocationListener {
-        override fun onLocationChanged(location: Location) {
-            mapFragment.setActualLocation(location)
-        }
-        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-        override fun onProviderEnabled(provider: String) {}
-        override fun onProviderDisabled(provider: String) {}
-    }
 }
+
