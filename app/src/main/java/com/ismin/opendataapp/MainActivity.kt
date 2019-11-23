@@ -37,6 +37,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_place_list.*
 
 
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
@@ -156,6 +157,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             mapFragment.addLocation(tmpLocation, tmpLocation.provider)
         }
         placesListFragment.setPlacesList(placesList)
+        f_place_list_text_view_count.text = "${result.count} results"
         Toast.makeText(this, "${result.count} results !", Toast.LENGTH_LONG).show()
     }
 

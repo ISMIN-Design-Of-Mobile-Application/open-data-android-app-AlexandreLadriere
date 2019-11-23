@@ -8,12 +8,23 @@
     tools:context=".placesfragment.PlaceListFragment">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/f_place_list_rcv_place_list"
+    <TextView
+        android:id="@+id/f_place_list_text_view_count"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorGreyLight"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="wrap_content"
+        android:text="@string/results_count"
+        android:textStyle="italic"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/f_place_list_rcv_place_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@color/colorGreyLight"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/f_place_list_text_view_count" />
 </androidx.constraintlayout.widget.ConstraintLayout>
