@@ -31,46 +31,44 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/stade_velodrome" />
 
-        <TextView
-            android:id="@+id/place_text_view_name"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:text="Orange Vélodrome"
-            android:textColor="@color/colorBlack"
-            android:textSize="18sp"
-            android:textStyle="bold"
+            android:orientation="vertical"
             app:layout_constraintStart_toEndOf="@+id/place_image_view"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/place_text_view_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="8dp"
-            android:text="24 Rue du Commandant Guilbaud\n75016 Paris\nFrance"
-            android:textColor="@color/colorBlack"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@+id/place_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/place_text_view_name" />
+            <TextView
+                android:id="@+id/place_text_view_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Orange Vélodrome"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
 
-        <TextView
-            android:id="@+id/place_text_view_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="8dp"
-            android:text="0.077 km"
-            android:textSize="12sp"
-            android:textStyle="italic"
-            android:textColor="@color/colorGrey"
-            app:layout_constraintStart_toEndOf="@+id/place_image_view"
-            app:layout_constraintTop_toBottomOf="@+id/place_text_view_address" />
+            <TextView
+                android:id="@+id/place_text_view_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24 Rue du Commandant Guilbaud\n75016 Paris\nFrance"
+                android:textColor="@color/colorBlack"
+                android:textSize="12sp"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/place_text_view_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.077 km"
+                android:textColor="@color/colorGrey"
+                android:textSize="12sp"
+                android:textStyle="italic" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

@@ -37,6 +37,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
+import kotlinx.android.synthetic.main.fragment_place_list.*
 
 
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
@@ -144,8 +145,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 PlaceEntity(
                     i,
                     tmpLocation.provider,
-                    "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}\n${result.data.features[i].properties.address_components.country}\n${result.data.features[i].properties.address_components.province}",
-                    result.data.features[i].properties.proximity.toString(),
+                    "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}, " +
+                            "${result.data.features[i].properties.address_components.province}\n${result.data.features[i].properties.address_components.country}",
+                    String.format("%.3f", result.data.features[i].properties.proximity),
                     tmpLocation.longitude.toString(),
                     tmpLocation.latitude.toString(),
                     website,
@@ -155,6 +157,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             mapFragment.addLocation(tmpLocation, tmpLocation.provider)
         }
         placesListFragment.setPlacesList(placesList)
+        f_place_list_text_view_count.text = "${result.count} results"
         Toast.makeText(this, "${result.count} results !", Toast.LENGTH_LONG).show()
     }
 
@@ -255,7 +258,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     override fun onFragmentInteractionSports(list: ArrayList<SportEntity>, distance: Int) {
         placesList.clear()
         for(i in 0 until list.size) {
-            searchPlaces(currentLongitude.toString(), currentLatitude.toString(), distance.toString(), list[i].id.toString())
+            // searchPlaces(currentLongitude.toString(), currentLatitude.toString(), distance.toString(), list[i].id.toString())
+            // Test
+            searchPlaces("-73.582", "45.511", distance.toString(), list[i].id.toString())
         }
         mainViewPager.currentItem = 1
         // I (Alex) don't know the purpose of the following function
