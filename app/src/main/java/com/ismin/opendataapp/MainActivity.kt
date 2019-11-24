@@ -272,6 +272,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     }
 
     override fun searchInThisArea(longitude: Double, latitude: Double) {
+        placesList.clear()
         for(i in 0 until currentSportList.size) {
             searchPlaces(longitude.toString(), latitude.toString(), currentDistance.toString(), currentSportList[i].id.toString())
         }
