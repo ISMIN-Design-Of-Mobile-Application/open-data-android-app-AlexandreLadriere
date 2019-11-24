@@ -141,20 +141,20 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             tmpLocation.longitude = result.data.features[i].geometry.coordinates[0]
             tmpLocation.latitude = result.data.features[i].geometry.coordinates[1]
 
-            placesList.add(
-                PlaceEntity(
-                    i,
-                    tmpLocation.provider,
-                    "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}, " +
-                            "${result.data.features[i].properties.address_components.province}\n${result.data.features[i].properties.address_components.country}",
-                    String.format("%.3f", result.data.features[i].properties.proximity),
-                    tmpLocation.longitude.toString(),
-                    tmpLocation.latitude.toString(),
-                    website,
-                    image = R.drawable.stade_velodrome // TODO: Modifier image
-                )
+            val currentPlaceEntity = PlaceEntity(
+                i,
+                tmpLocation.provider,
+                "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}, " +
+                        "${result.data.features[i].properties.address_components.province}\n${result.data.features[i].properties.address_components.country}",
+                String.format("%.3f", result.data.features[i].properties.proximity),
+                tmpLocation.longitude.toString(),
+                tmpLocation.latitude.toString(),
+                website,
+                image = R.drawable.stade_velodrome // TODO: Modifier image
             )
-            mapFragment.addLocation(tmpLocation, tmpLocation.provider)
+
+            placesList.add(currentPlaceEntity)
+            mapFragment.addLocation(tmpLocation, tmpLocation.provider, currentPlaceEntity)
         }
         placesListFragment.setPlacesList(placesList)
         f_place_list_text_view_count.text = "${result.count} results"
@@ -258,9 +258,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     override fun onFragmentInteractionSports(list: ArrayList<SportEntity>, distance: Int) {
         placesList.clear()
         for(i in 0 until list.size) {
-            // searchPlaces(currentLongitude.toString(), currentLatitude.toString(), distance.toString(), list[i].id.toString())
+            searchPlaces(currentLongitude.toString(), currentLatitude.toString(), distance.toString(), list[i].id.toString())
             // Test
-            searchPlaces("-73.582", "45.511", distance.toString(), list[i].id.toString())
+            // searchPlaces("-73.582", "45.511", distance.toString(), list[i].id.toString())
         }
         mainViewPager.currentItem = 1
         // I (Alex) don't know the purpose of the following function
