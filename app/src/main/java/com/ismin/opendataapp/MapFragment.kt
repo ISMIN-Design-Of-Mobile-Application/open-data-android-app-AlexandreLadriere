@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.GoogleMap
@@ -25,12 +26,18 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
     private var locationsList: MutableMap<String, LatLng> = mutableMapOf()
     private var placeEntityList: MutableMap<String, PlaceEntity> = mutableMapOf()
     private var isMapReady = false
+    private lateinit var searchAreaButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_map, container, false)
+        val view = inflater.inflate(R.layout.fragment_map, container, false)
+        searchAreaButton = view.findViewById<Button>(R.id.f_map_button_search_in_this_area)
+        searchAreaButton.setOnClickListener {
+            it.visibility = View.INVISIBLE
+        }
+        return view
     }
 
     fun onButtonPressed(uri: Uri) {
@@ -79,6 +86,7 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
 
     override fun onCameraIdle() {
         val centerLocation = gMap.cameraPosition.target
+        searchAreaButton.visibility = View.VISIBLE
         Toast.makeText(context, "The camera has stopped moving.$centerLocation", Toast.LENGTH_SHORT).show()
     }
 

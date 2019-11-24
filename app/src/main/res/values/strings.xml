@@ -29,4 +29,5 @@
     <string name="gps_off_message">This application need to use your GPS. Please turn on your GPS.</string>
     <string name="search">Search</string>
     <string name="results_count">0 results</string>
+    <string name="search_in_this_area">\u0020\u0020 Search in this area \u0020\u0020</string>
 </resources>
