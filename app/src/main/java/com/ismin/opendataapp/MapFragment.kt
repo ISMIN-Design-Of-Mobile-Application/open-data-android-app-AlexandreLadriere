@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.ismin.opendataapp.placesfragment.database.PlaceEntity
 
-class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback {
+class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyCallback, GoogleMap.OnCameraIdleListener {
 
     private var listener: OnFragmentInteractionListener? = null
     private lateinit var gMap: GoogleMap
@@ -40,6 +40,8 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
     override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
         isMapReady = true
+        gMap.setOnCameraIdleListener(this)
+        gMap.setOnInfoWindowClickListener(this)
     }
 
     override fun onInfoWindowClick(p0: Marker?) {
@@ -75,12 +77,16 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
         mapFragment.getMapAsync(this)
     }
 
+    override fun onCameraIdle() {
+        val centerLocation = gMap.cameraPosition.target
+        Toast.makeText(context, "The camera has stopped moving.$centerLocation", Toast.LENGTH_SHORT).show()
+    }
+
     private fun displayOnMap() {
         gMap.clear()
         for ((key, location) in locationsList) {
             gMap.addMarker(MarkerOptions().position(location).title(key)).tag = placeEntityList[key]
         }
-        gMap.setOnInfoWindowClickListener(this)
     }
 
     fun addLocation(location: Location, name: String, placeEntity: PlaceEntity) {
