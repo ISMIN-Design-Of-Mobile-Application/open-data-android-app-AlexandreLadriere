@@ -62,6 +62,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     private val sportsService = retrofit.create<SportsService>(SportsService::class.java)
     private val sportsList: ArrayList<SportEntity> = ArrayList()
     private val placesList: ArrayList<PlaceEntity> = ArrayList()
+    private var currentSportList: ArrayList<SportEntity> = ArrayList()
+    private var currentDistance: Int = 0
 
     private var disposable: Disposable? = null
     private val PlaceServe by lazy {
@@ -257,14 +259,22 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
     override fun onFragmentInteractionSports(list: ArrayList<SportEntity>, distance: Int) {
         placesList.clear()
+        currentDistance = distance
+        currentSportList = list
         for(i in 0 until list.size) {
-            searchPlaces(currentLongitude.toString(), currentLatitude.toString(), distance.toString(), list[i].id.toString())
+            searchPlaces(currentLongitude.toString(), currentLatitude.toString(), currentDistance.toString(), currentSportList[i].id.toString())
             // Test
             // searchPlaces("-73.582", "45.511", distance.toString(), list[i].id.toString())
         }
         mainViewPager.currentItem = 1
         // I (Alex) don't know the purpose of the following function
         //placesListFragment.setSelectedSportsList(list, distance)
+    }
+
+    override fun searchInThisArea(longitude: Double, latitude: Double) {
+        for(i in 0 until currentSportList.size) {
+            searchPlaces(longitude.toString(), latitude.toString(), currentDistance.toString(), currentSportList[i].id.toString())
+        }
     }
 
     override fun onFragmentInteractionPlaceList(uri: Uri) {

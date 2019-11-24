@@ -27,6 +27,7 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
     private var placeEntityList: MutableMap<String, PlaceEntity> = mutableMapOf()
     private var isMapReady = false
     private lateinit var searchAreaButton: Button
+    private lateinit var centerLocation: LatLng
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +37,10 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
         searchAreaButton = view.findViewById<Button>(R.id.f_map_button_search_in_this_area)
         searchAreaButton.setOnClickListener {
             it.visibility = View.INVISIBLE
+            locationsList.clear()
+            placeEntityList.clear()
+            gMap.clear()
+            listener?.searchInThisArea(centerLocation.longitude, centerLocation.latitude)
         }
         return view
     }
@@ -76,6 +81,7 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
 
     interface OnFragmentInteractionListener {
         fun onFragmentInteractionMap(uri: Uri)
+        fun searchInThisArea(longitude: Double, latitude: Double)
     }
 
     override fun onStart() {
@@ -85,9 +91,8 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
     }
 
     override fun onCameraIdle() {
-        val centerLocation = gMap.cameraPosition.target
+        centerLocation = gMap.cameraPosition.target
         searchAreaButton.visibility = View.VISIBLE
-        Toast.makeText(context, "The camera has stopped moving.$centerLocation", Toast.LENGTH_SHORT).show()
     }
 
     private fun displayOnMap() {
