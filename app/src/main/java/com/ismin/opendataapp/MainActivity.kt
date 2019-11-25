@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         }
         currentResultsCount += result.count
         placesListFragment.setPlacesList(placesList)
-        f_place_list_text_view_count.text = "$currentResultsCount results"
+        f_place_list_text_view_count.text = "$currentResultsCount" + " " + getString(R.string.results)
     }
 
     private fun initiateSportsList() {
