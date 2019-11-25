@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     private lateinit var locationManager: LocationManager
     private var currentLatitude: Double = 0.0
     private var currentLongitude: Double = 0.0
+    private var currentResultsCount: Int = 0
 
     private val sportsFragment = SportsFragment()
     private val placesListFragment = PlaceListFragment()
@@ -154,13 +155,12 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 website,
                 image = R.drawable.stade_velodrome // TODO: Modifier image
             )
-
             placesList.add(currentPlaceEntity)
             mapFragment.addLocation(tmpLocation, tmpLocation.provider, currentPlaceEntity)
         }
+        currentResultsCount += result.count
         placesListFragment.setPlacesList(placesList)
-        f_place_list_text_view_count.text = "${result.count} results"
-        Toast.makeText(this, "${result.count} results !", Toast.LENGTH_LONG).show()
+        f_place_list_text_view_count.text = "$currentResultsCount results"
     }
 
     private fun initiateSportsList() {
@@ -261,10 +261,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         placesList.clear()
         currentDistance = distance
         currentSportList = list
+        currentResultsCount = 0
         for(i in 0 until list.size) {
             searchPlaces(currentLongitude.toString(), currentLatitude.toString(), currentDistance.toString(), currentSportList[i].id.toString())
-            // Test
-            // searchPlaces("-73.582", "45.511", distance.toString(), list[i].id.toString())
         }
         mainViewPager.currentItem = 1
         // I (Alex) don't know the purpose of the following function
@@ -273,6 +272,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
     override fun searchInThisArea(longitude: Double, latitude: Double) {
         placesList.clear()
+        currentResultsCount = 0
         for(i in 0 until currentSportList.size) {
             searchPlaces(longitude.toString(), latitude.toString(), currentDistance.toString(), currentSportList[i].id.toString())
         }

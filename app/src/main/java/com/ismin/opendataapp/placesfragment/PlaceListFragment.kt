@@ -59,7 +59,6 @@ class PlaceListFragment : Fragment() {
     }
 
     private fun selectPlace(position: Int) {
-        // TODO: Implement that function after creating the third fragment
         val placeToDisplay = this.placesList[position]
         listener?.sendPlaceObject(placeToDisplay)
     }
