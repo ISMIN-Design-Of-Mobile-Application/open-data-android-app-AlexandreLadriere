@@ -57,7 +57,6 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
     }
 
     override fun onInfoWindowClick(p0: Marker?) {
-        Toast.makeText(context, p0?.title.toString(), Toast.LENGTH_LONG).show()
         val intent = Intent(context, PlaceDetailsActivity::class.java)
         if(p0?.tag != null) {
             intent.putExtra(Intent.EXTRA_TEXT, p0?.tag as PlaceEntity)
