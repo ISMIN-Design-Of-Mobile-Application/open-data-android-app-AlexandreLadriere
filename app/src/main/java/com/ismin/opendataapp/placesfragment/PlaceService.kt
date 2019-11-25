@@ -10,6 +10,7 @@ import retrofit2.http.Query
 interface PlaceService {
     @GET("places")
     fun getPlaces(@Query("origin") origin: String,
+                  @Query("page") page: String,
                   @Query("radius") radius: String,
                   @Query("sports") sports: String) : Observable<PlaceModel.Result>
 

@@ -1,7 +1,8 @@
 package com.ismin.opendataapp.placesfragment
 
 object PlaceModel {
-    data class Result(val count: Int, val data: Data)
+    data class Result(val links: Links, val count: Int, val data: Data)
+    data class Links(val self: String, val first: String, val next: String, val last: String)
     data class Data(val features: Array<Features>)
     data class Features(val properties: Properties, val geometry: Geometry)
     data class Properties(val name: String, val proximity: Double, val contact_details: ContactDetails, val address_components: AddressComponents, val photo_reference: String)

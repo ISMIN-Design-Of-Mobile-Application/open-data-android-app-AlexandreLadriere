@@ -38,6 +38,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_place_list.*
+import kotlin.math.ceil
 
 
 class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListener,
@@ -121,21 +122,35 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         disposable?.dispose()
     }
 
-    private fun searchPlaces(longitude: String, latitude: String, radius: String, sportCode: String) {
-        disposable = PlaceServe.getPlaces("$longitude,$latitude", radius, sportCode)
+    private fun searchPlaces(longitude: String, latitude: String, radius: String, sportCode: String, page: String = "1") {
+        disposable = PlaceServe.getPlaces("$longitude,$latitude", page, radius, sportCode)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { result -> fillPlaceListFromResult(result) },
+                { result ->
+                    val resultCountDbl: Double = result.count.toDouble()
+                    val nbPagesDbl: Double = 10.toDouble()
+                    val nbPagesInt = ceil(resultCountDbl/nbPagesDbl).toInt()
+                    currentResultsCount += result.count
+                    f_place_list_text_view_count.text = "$currentResultsCount" + " " + getString(R.string.results)
+                    for(j in 1..nbPagesInt) {
+                        disposable = PlaceServe.getPlaces("$longitude,$latitude", j.toString(), radius, sportCode)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(
+                                { resultBis -> fillPlaceListFromResult(resultBis) },
+                                { errorBis -> Toast.makeText(this, errorBis.message, Toast.LENGTH_SHORT).show() })
+                    }
+                },
                 { error -> Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show() }
             )
     }
 
     private fun fillPlaceListFromResult(result: PlaceModel.Result) {
         // TODO: boucle for pour result.count et pas juste pour data.features.size
-        for(i in 0 until result.data.features.size) {
+        for (i in 0 until result.data.features.size) {
             var website = "https://www.jcchevalier.fr/"
-            if(result.data.features[i].properties.contact_details.website != null) {
+            if (result.data.features[i].properties.contact_details.website != null) {
                 website = result.data.features[i].properties.contact_details.website
             }
 
@@ -158,9 +173,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             placesList.add(currentPlaceEntity)
             mapFragment.addLocation(tmpLocation, tmpLocation.provider, currentPlaceEntity)
         }
-        currentResultsCount += result.count
         placesListFragment.setPlacesList(placesList)
-        f_place_list_text_view_count.text = "$currentResultsCount" + " " + getString(R.string.results)
     }
 
     private fun initiateSportsList() {
