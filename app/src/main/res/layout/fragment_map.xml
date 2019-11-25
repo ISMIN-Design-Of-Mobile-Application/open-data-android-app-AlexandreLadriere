@@ -19,7 +19,7 @@
         android:id="@+id/f_map_button_search_in_this_area"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/custom_rectangle_blue_cr20"
         android:text="@string/search_in_this_area"
         android:textColor="@color/colorWhite"

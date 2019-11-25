@@ -150,8 +150,8 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 "${result.data.features[i].properties.address_components.address}\n${result.data.features[i].properties.address_components.city}, " +
                         "${result.data.features[i].properties.address_components.province}\n${result.data.features[i].properties.address_components.country}",
                 String.format("%.3f", result.data.features[i].properties.proximity),
-                tmpLocation.longitude.toString(),
-                tmpLocation.latitude.toString(),
+                String.format("%.4f", tmpLocation.longitude),
+                String.format("%.4f", tmpLocation.latitude),
                 website,
                 image = R.drawable.stade_velodrome // TODO: Modifier image
             )
