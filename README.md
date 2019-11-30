@@ -1,54 +1,81 @@
 
-## [APP NAME]  
+# Sport Places Finder
   
-Codé par :   
+Coded by :
  - Jean-Christophe CHEVALIER   
  - Alexandre LADRIERE   
 
 ## Description  
-  
-URL des données : https://sportplaces.api.decathlon.com/api/v1/places  
 
-Cette application Android fait appel à une base de données qui recense tous les lieux sportifs au monde.
-Elle permet ainsi à l'utilisateur de savoir quels lieux à proximité de sa position où aller afin de
-pratiquer un sport qu'il renseigne.
+This application uses two APIs from Décathlon: __Sport Places API__ (`https://developers.decathlon.com/products/sport-places`) and __Sport API__ (`https://developers.decathlon.com/products/sports`).
 
-Afin de récupérer les données, le client envoie une requête GET au serveur, sous la forme suivante:
-_https://sportplaces.api.decathlon.com/api/v1/places?origin=x&radius=y&sports=z_ avec
-x: la position actuelle de l'utilisateur.
-y: le rayon de recherche en km.
-z: le code identifiant le sport indiqué. Chaque sport est associé à un code unique.
+This application allows the user to find all the places where he can practice the chosen sport(s) within the specified search radius with respect to his current position. 
 
-## Librairies externes  
+The Sport API is used to propose the list of sports, and the Sport Places API is used to retrieve the places. 
+
+In order to retrieve the data, the client sends a GET request to the server, in the following form:
+`https://sportplaces.api.decathlon.com/api/v1/places?origin=X&radius=Y&sports=Z`
+
+  - `X`: the current position of the user.
+
+  - `Y`: the search radius in km.
+
+  - `Z`: the code identifying the sport indicated. Each sport is associated with a unique code, retrieve with the Sport API.
+
+__Note__: The Decathlon API database does not contain all the sports places in the world. The API may not return any results even if installations exist. To test the application and see the type of results returned, it is best to place yourself in Montreal (Quebec, CA) and do a search for sports such as Fitness, Ice Hockey, Football, ...
+
+## Librairies 
   
-[A completer]  
+  - Converter: Gson: `'com.squareup.retrofit2:converter-gson:2.6.2'`
+  - Retrofit: `'com.squareup.retrofit2:retrofit:2.6.2'`
+  - Adapter: RxJava 2: `'com.squareup.retrofit2:adapter-rxjava2:2.3.0'`
+  - [Ramotion] - [Fluid Slider]: `"com.ramotion.fluidslider:fluid-slider:0.3.1"`
+  - RxAndroid: `'io.reactivex.rxjava2:rxandroid:2.1.1'`
+  - Gson: `'com.google.code.gson:gson:2.8.6'`
+  - Material Components for Android: `'com.google.android.material:material:1.0.0'`
+  - Play Services Plus: `'com.google.android.gms:play-services-plus:17.0.0'`
+  - Play Services Maps: `'com.google.android.gms:play-services-maps:17.0.0'`
+  - Place Services Location: `"com.google.android.gms:play-services-location:17.0.0"`
+  - Android AppCompat Library: `'androidx.appcompat:appcompat:1.1.0'`
+  - Core Kotlin Extensions: `'androidx.core:core-ktx:1.1.0'`
+  - Android Constraint Layout: `'androidx.constraintlayout:constraintlayout:1.1.3'`
+  - Legacy Support: `'androidx.legacy:legacy-support-v4:1.0.0'`
+  - Android Support Recycler View: `'androidx.recyclerview:recyclerview:1.1.0'`
+
   
-## Consignes  
+## Instructions  
   
-Lien vers le sujet : https://docs.google.com/presentation/d/1mwu2xx7_qfCZDfsRxseC94n7oBGYfhw-9xIftaTDbzk/edit#slide=id.p97  
+Link to the subject : https://docs.google.com/presentation/d/1mwu2xx7_qfCZDfsRxseC94n7oBGYfhw-9xIftaTDbzk/edit#slide=id.p97  
   
-### But du projet  
+### Purpose of the project  
   
- - Le but du projet est de réaliser une application permettant de visualiser une série de données OpenData  
- - Les données devront être récupérées sur un serveur distant et affichées dans une liste et sur une carte  
- - Un clique sur un élément de la liste ou sur un marker de la carte permet d’accéder à un écran présentant le détail de l’élément  
- - Un écran présentera des informations générales sur les données récupérées  
+ - The goal of the project is to create an application to visualize a series of OpenData data  
+ - The data will have to be retrieved from a remote server and displayed in a list and on a map  
+ - Clicking on an item in the list or on a marker on the map gives access to a screen showing the details of the item  
+ - A screen will present general information about the recovered data  
   
-### Exigences    
-- [ ] Format des données OpenData :   
-	 - Format Json  
-	 - Avec un champ correspondant à l’url d’une image  
-	 - Avec un champ correspondant à une position  
- - [ ] Application composée au minimum de 3 Fragment et 2 Activity  
- - [ ] Une Actionbar sera présente et permettra de rafraîchir les données récupérées et affichées
+### Requirements    
+- OpenData data format:   
+	 - Json format  
+	 - With a field corresponding to the url of an image  
+	 - With a field corresponding to a position  
+ - Application composed of at least 3 Fragments and 2 Activities  
+ - An Actionbar will be present and will refresh the recovered and displayed data
  
  ## Bonus
  
- - Amélioration de l’expérience utilisateur :
-    - Clustering des markers sur la carte en fonction du niveau de zoom
-    - Mise en place d’un système de recherche/filtre sur la liste affichée
+ - Improved user experience:
+    - Clustering of markers on the map according to the zoom level
+    - Setting up a search/filter system on the displayed list
  
- - Enrichissements techniques :
-    - Mise en place d’une base de données locale pour afficher la liste d’élément en mode hors connexion
-    - Utilisation de LiveData ou d’Observable pour la récupération de données dans la BDD
+ - Technical enhancements :
+    - Setting up a local database to display the item list in offline mode
+    - Using LiveData or Observable for data recovery in the database
  
+ ## License
+ This project is licensed under the MIT License - see the [LICENSE] file for details.
+
+
+  [Ramotion]: <www.ramotion.com>
+  [Fluid Slider]: <https://github.com/Ramotion/fluid-slider-android>
+  [LICENSE]: <LICENSE>
