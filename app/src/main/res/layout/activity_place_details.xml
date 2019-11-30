@@ -97,18 +97,20 @@
                 android:layout_height="28dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_link" />
+
             <TextView
                 android:id="@+id/a_place_details_text_view_place_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="www.website-if-there-is-one.com"
-                android:textSize="20sp"
-                android:textStyle="normal"
-                android:textColor="@color/colorBlack"
+                android:layout_gravity="center"
                 android:layout_marginStart="10dp"
-                android:autoLink="web"
                 android:layout_marginLeft="10dp"
-                android:layout_gravity="center"/>
+                android:autoLink="web"
+                android:text="www.website-if-there-is-one.com"
+                android:textColor="@color/colorBlack"
+                android:textIsSelectable="true"
+                android:textSize="20sp"
+                android:textStyle="normal" />
         </LinearLayout>
 
         <LinearLayout
