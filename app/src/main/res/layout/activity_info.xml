@@ -177,8 +177,8 @@
                             android:id="@+id/a_info_linear_layout_author1_linkedin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginLeft="30dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"
                             android:orientation="horizontal"
                             app:layout_constraintStart_toEndOf="@+id/a_info_image_view_author1"
@@ -210,8 +210,8 @@
                             android:id="@+id/a_info_linear_layout_author1_github"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginLeft="30dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="12dp"
                             android:orientation="horizontal"
                             app:layout_constraintStart_toEndOf="@+id/a_info_image_view_author1"
@@ -284,8 +284,8 @@
                             android:id="@+id/a_info_linear_layout_author2_linkedin"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginLeft="30dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="10dp"
                             android:orientation="horizontal"
                             app:layout_constraintStart_toEndOf="@+id/a_info_image_view_author2"
@@ -317,8 +317,8 @@
                             android:id="@+id/a_info_linear_layout_author2_github"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="30dp"
-                            android:layout_marginLeft="30dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
                             android:layout_marginTop="12dp"
                             android:orientation="horizontal"
                             app:layout_constraintStart_toEndOf="@+id/a_info_image_view_author2"
@@ -362,7 +362,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/a_info_constraint_layout_author2" />
 
                     <TextView
-                        android:id="@+id/a_info_text_view_context"
+                        android:id="@+id/a_info_text_view_instructions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -370,7 +370,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginRight="10dp"
-                        android:text="@string/context"
+                        android:text="@string/instructions"
                         android:textColor="@color/colorBlack"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -379,7 +379,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/a_info_divider3" />
 
                     <TextView
-                        android:id="@+id/a_info_text_view_context_content"
+                        android:id="@+id/a_info_text_view_instructions_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -387,13 +387,156 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginEnd="10dp"
                         android:layout_marginRight="10dp"
-                        android:text="@string/context_content"
+                        android:text="@string/instructions_content"
                         android:textColor="@color/colorBlack"
                         android:textSize="12sp"
                         android:autoLink="web"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_context" />
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_instructions" />
+
+                    <View
+                        android:id="@+id/a_info_divider5"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/colorGreyLight2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_instructions_content" />
+
+                    <TextView
+                        android:id="@+id/a_info_text_view_project_purpose"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/project_purpose"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_divider5" />
+
+                    <TextView
+                        android:id="@+id/a_info_text_view_context_project_purpose_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/project_purpose_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp"
+                        android:autoLink="web"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_project_purpose" />
+
+                    <View
+                        android:id="@+id/a_info_divider6"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/colorGreyLight2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_context_project_purpose_content" />
+
+                    <TextView
+                        android:id="@+id/a_info_text_view_requirements"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/requirements"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_divider6" />
+
+                    <TextView
+                        android:id="@+id/a_info_text_view_requirements_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/requirements_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp"
+                        android:autoLink="web"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_requirements" />
+
+                    <View
+                        android:id="@+id/a_info_divider7"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/colorGreyLight2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_requirements_content" />
+
+                    <TextView
+                        android:id="@+id/a_info_text_view_libraries"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/libraries"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_divider7" />
+
+                    <TextView
+                        android:id="@+id/a_info_text_view_libraries_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:text="@string/libraries_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_libraries" />
 
                     <View
                         android:id="@+id/a_info_divider4"
@@ -407,7 +550,7 @@
                         android:background="@color/colorGreyLight2"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_context_content" />
+                        app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_libraries_content" />
 
                     <TextView
                         android:id="@+id/a_info_text_view_licence"

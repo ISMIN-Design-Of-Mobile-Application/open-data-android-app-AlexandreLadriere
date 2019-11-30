@@ -24,7 +24,7 @@ In order to retrieve the data, the client sends a GET request to the server, in 
 
 __Note__: The Decathlon API database does not contain all the sports places in the world. The API may not return any results even if installations exist. To test the application and see the type of results returned, it is best to place yourself in Montreal (Quebec, CA) and do a search for sports such as Fitness, Ice Hockey, Football, ...
 
-## Librairies 
+## Libraries 
   
   - Converter: Gson: `'com.squareup.retrofit2:converter-gson:2.6.2'`
   - Retrofit: `'com.squareup.retrofit2:retrofit:2.6.2'`
