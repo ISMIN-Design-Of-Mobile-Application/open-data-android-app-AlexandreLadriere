@@ -263,6 +263,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 true
             }
             R.id.action_refresh -> {
+                Toast.makeText(baseContext, "Data refreshed !", Toast.LENGTH_SHORT).show()
                 searchInThisArea(mapFragment.centerLocation.longitude, mapFragment.centerLocation.latitude)
                 true
             }
