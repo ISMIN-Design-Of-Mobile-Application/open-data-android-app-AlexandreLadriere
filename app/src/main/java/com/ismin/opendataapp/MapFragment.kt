@@ -27,7 +27,7 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
     private var placeEntityList: MutableMap<String, PlaceEntity> = mutableMapOf()
     private var isMapReady = false
     private lateinit var searchAreaButton: Button
-    private lateinit var centerLocation: LatLng
+    var centerLocation: LatLng = LatLng(48.5421, 2.6554)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

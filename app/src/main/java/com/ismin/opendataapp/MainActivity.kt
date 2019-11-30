@@ -262,6 +262,10 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                 this.startActivity(intent)
                 true
             }
+            R.id.action_refresh -> {
+                searchInThisArea(mapFragment.centerLocation.longitude, mapFragment.centerLocation.latitude)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
