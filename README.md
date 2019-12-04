@@ -23,6 +23,7 @@ In order to retrieve the data, the client sends a GET request to the server, in 
   - `Z`: the code identifying the sport indicated. Each sport is associated with a unique code, retrieve with the Sport API.
 
 __Note__: The Decathlon API database does not contain all the sports places in the world. The API may not return any results even if installations exist. To test the application and see the type of results returned, it is best to place yourself in Montreal (Quebec, CA) and do a search for sports such as Fitness, Ice Hockey, Football, ...
+
 Moreover, there are no direct links for image in the data returned by the request. An image reference could be retrieve for each place by using the following request:
 `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=PLACE_NAME&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=YOUR_API_KEY`
 
