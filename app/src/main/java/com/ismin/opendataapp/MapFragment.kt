@@ -94,27 +94,22 @@ class MapFragment : Fragment(), GoogleMap.OnInfoWindowClickListener, OnMapReadyC
         searchAreaButton.visibility = View.VISIBLE
     }
 
-    private fun displayOnMap() {
-        gMap.clear()
-        for ((key, location) in locationsList) {
-            gMap.addMarker(MarkerOptions().position(location).title(key)).tag = placeEntityList[key]
-        }
-    }
-
     fun addLocation(location: Location, name: String, placeEntity: PlaceEntity) {
-        locationsList[name] = LatLng(location.latitude, location.longitude)
+        val tmpLoc = LatLng(location.latitude, location.longitude)
+        locationsList[name] = tmpLoc
         placeEntityList[name] = placeEntity
         if (isMapReady) {
-            displayOnMap()
+            gMap.addMarker(MarkerOptions().position(tmpLoc).title(name)).tag = placeEntity
         }
     }
 
     fun setActualLocation(location: Location) {
         val key = "Current Location"
-        locationsList[key] = LatLng(location.latitude, location.longitude)
+        val tmpLoc = LatLng(location.latitude, location.longitude)
+        locationsList[key] = tmpLoc
         placeEntityList[key] = PlaceEntity(0, key, "Here", "0", location.latitude.toString(), location.longitude.toString())
         if (isMapReady) {
-            displayOnMap()
+            gMap.addMarker(MarkerOptions().position(tmpLoc).title(key)).tag = placeEntityList[key]
         }
     }
 }
