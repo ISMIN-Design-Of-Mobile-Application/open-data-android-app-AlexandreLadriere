@@ -14,11 +14,11 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="41dp"
-        android:background="@drawable/custom_rectangle_white_cr10"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/custom_rectangle_white_cr10_top"
         app:layout_constraintBottom_toBottomOf="@+id/f_fluid_slider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +30,12 @@
         android:id="@+id/textInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/custom_rectangle_white_cr10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -51,11 +57,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
+        app:bar_color="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/f_sport_button_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:size="small"
-        app:bar_color="@color/colorPrimary" />
+        app:size="small" />
 
     <Button
         android:id="@+id/f_sport_button_search"
