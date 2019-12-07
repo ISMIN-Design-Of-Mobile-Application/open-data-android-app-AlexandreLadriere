@@ -27,7 +27,6 @@
             android:layout_marginLeft="15dp" />
 
         <TextView
-            android:id="@+id/a_info_text_view_information_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/information_menu_icon"
@@ -185,14 +184,12 @@
                             app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_author1_name">
 
                             <ImageView
-                                android:id="@+id/a_info_image_view_linkedin_logo"
                                 android:layout_width="13dp"
                                 android:layout_height="13dp"
                                 android:layout_gravity="center"
                                 app:srcCompat="@drawable/ic_linkedin_white_24" />
 
                             <TextView
-                                android:id="@+id/a_info_text_view_linkedin_chevalier"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -207,7 +204,6 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/a_info_linear_layout_author1_github"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -218,14 +214,12 @@
                             app:layout_constraintTop_toBottomOf="@+id/a_info_linear_layout_author1_linkedin">
 
                             <ImageView
-                                android:id="@+id/a_info_image_view_github_logo"
                                 android:layout_width="13dp"
                                 android:layout_height="13dp"
                                 android:layout_gravity="center"
                                 app:srcCompat="@drawable/ic_github_logo_white" />
 
                             <TextView
-                                android:id="@+id/a_info_text_view_github_chevalier"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -292,14 +286,12 @@
                             app:layout_constraintTop_toBottomOf="@+id/a_info_text_view_author2_name">
 
                             <ImageView
-                                android:id="@+id/a_info_image_view_linkedin_logo_author2"
                                 android:layout_width="13dp"
                                 android:layout_height="13dp"
                                 android:layout_gravity="center"
                                 app:srcCompat="@drawable/ic_linkedin_white_24" />
 
                             <TextView
-                                android:id="@+id/a_info_text_view_linkedin_ladriere"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -314,7 +306,6 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/a_info_linear_layout_author2_github"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
@@ -325,14 +316,12 @@
                             app:layout_constraintTop_toBottomOf="@+id/a_info_linear_layout_author2_linkedin">
 
                             <ImageView
-                                android:id="@+id/a_info_image_view_github_logo_author2"
                                 android:layout_width="13dp"
                                 android:layout_height="13dp"
                                 android:layout_gravity="center"
                                 app:srcCompat="@drawable/ic_github_logo_white" />
 
                             <TextView
-                                android:id="@+id/a_info_text_view_github_ladriere"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -570,7 +559,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/a_info_divider4" />
 
                     <TextView
-                        android:id="@+id/a_info_text_view_licence_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
