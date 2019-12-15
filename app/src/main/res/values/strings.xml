@@ -2,8 +2,6 @@
     <string name="app_name">Sport Places Finder</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="sports_list">Sports list</string>
     <string name="information_menu_icon">Information</string>
     <string name="refresh_menu_icon">Refresh</string>
 
@@ -32,7 +30,6 @@
     <string name="no_internet_connexion">No Internet Connexion</string>
     <string name="offline_message">You are offline. Please check your internet connection if you want to use all features of this app</string>
     <string name="close">CLOSE</string>
-    <string name="title_activity_maps">Map</string>
     <string name="google_maps_key">AIzaSyDTvIgeeBFG2uXzuraR7TVbDs4TSZL_IGg</string>
     <string name="gps_off">GPS Offline</string>
     <string name="gps_off_message">This application need to use your GPS. Please turn on your GPS.</string>

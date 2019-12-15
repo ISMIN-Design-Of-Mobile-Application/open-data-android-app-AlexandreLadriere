@@ -28,16 +28,16 @@ import com.ismin.opendataapp.sportsfragment.SportsService
 import com.ismin.opendataapp.sportsfragment.database.SportDAO
 import com.ismin.opendataapp.sportsfragment.database.SportDatabase
 import com.ismin.opendataapp.sportsfragment.database.SportEntity
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_place_list.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_place_list.*
 import kotlin.math.ceil
 
 
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     private var currentDistance: Int = 0
 
     private var disposable: Disposable? = null
-    private val PlaceServe by lazy {
+    private val placeService by lazy {
         PlaceService.create()
     }
 
@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         super.onResume()
         checkGpsStatus()
         checkConnectivity(this)
-        initiateSportsList()
+        initiateSportsListFromDatabase()
     }
 
     override fun onPause() {
@@ -122,24 +122,42 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         disposable?.dispose()
     }
 
-    private fun searchPlaces(longitude: String, latitude: String, radius: String, sportCode: String, page: String = "1") {
-        disposable = PlaceServe.getPlaces("$longitude,$latitude", page, radius, sportCode)
+    private fun searchPlaces(
+        longitude: String,
+        latitude: String,
+        radius: String,
+        sportCode: String,
+        page: String = "1"
+    ) {
+        disposable = placeService.getPlaces("$longitude,$latitude", page, radius, sportCode)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { result ->
                     val resultCountDbl: Double = result.count.toDouble()
                     val nbPagesDbl: Double = 10.toDouble()
-                    val nbPagesInt = ceil(resultCountDbl/nbPagesDbl).toInt()
+                    val nbPagesInt = ceil(resultCountDbl / nbPagesDbl).toInt()
                     currentResultsCount += result.count
-                    f_place_list_text_view_count.text = "$currentResultsCount" + " " + getString(R.string.results)
-                    for(j in 1..nbPagesInt) {
-                        disposable = PlaceServe.getPlaces("$longitude,$latitude", j.toString(), radius, sportCode)
+                    f_place_list_text_view_count.text =
+                        "$currentResultsCount" + " " + getString(R.string.results)
+                    for (j in 1..nbPagesInt) {
+                        disposable = placeService.getPlaces(
+                            "$longitude,$latitude",
+                            j.toString(),
+                            radius,
+                            sportCode
+                        )
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(
                                 { resultBis -> fillPlaceListFromResult(resultBis) },
-                                { errorBis -> Toast.makeText(this, errorBis.message, Toast.LENGTH_SHORT).show() })
+                                { errorBis ->
+                                    Toast.makeText(
+                                        this,
+                                        errorBis.message,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                })
                     }
                 },
                 { error -> Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show() }
@@ -150,9 +168,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         // TODO: boucle for pour result.count et pas juste pour data.features.size
         for (i in 0 until result.data.features.size) {
             var website = "https://www.jcchevalier.fr/"
-            if (result.data.features[i].properties.contact_details.website != null) {
-                website = result.data.features[i].properties.contact_details.website
-            }
+            website = result.data.features[i].properties.contact_details.website
 
             val tmpLocation = Location(result.data.features[i].properties.name)
             // Latitude and longitude need to be inverted here !
@@ -176,6 +192,18 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         placesListFragment.setPlacesList(placesList)
     }
 
+    private fun initiateSportsListFromDatabase() {
+        if (sportDAO.getAll().isEmpty()) {
+            initiateSportsList()
+        } else {
+            sportsList.addAll(sportDAO.getAll())
+            sportsList.sortBy {
+                it.name
+            }
+            sportsFragment.setSportsList(sportsList)
+        }
+    }
+
     private fun initiateSportsList() {
         sportsService.getAllSports()
             .enqueue(object : Callback<List<SportEntity>> {
@@ -189,7 +217,9 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
                         }
                         sportsList.clear()
                         sportsList.addAll(allSports)
-                        sportsList.sortBy { it.name }
+                        sportsList.sortBy {
+                            it.name
+                        }
                         sportsFragment.setSportsList(sportsList)
                     }
                 }
@@ -250,7 +280,7 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             // Create the AlertDialog
             builder.create()
         }
-        if(!gpsStatus) {
+        if (!gpsStatus) {
             alertDialog?.show()
         }
     }
@@ -264,7 +294,10 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
             }
             R.id.action_refresh -> {
                 Toast.makeText(baseContext, "Data refreshed !", Toast.LENGTH_SHORT).show()
-                searchInThisArea(mapFragment.centerLocation.longitude, mapFragment.centerLocation.latitude)
+                searchInThisArea(
+                    mapFragment.centerLocation.longitude,
+                    mapFragment.centerLocation.latitude
+                )
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -280,8 +313,13 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
         currentDistance = distance
         currentSportList = list
         currentResultsCount = 0
-        for(i in 0 until list.size) {
-            searchPlaces(currentLongitude.toString(), currentLatitude.toString(), currentDistance.toString(), currentSportList[i].id.toString())
+        for (i in 0 until list.size) {
+            searchPlaces(
+                currentLongitude.toString(),
+                currentLatitude.toString(),
+                currentDistance.toString(),
+                currentSportList[i].id.toString()
+            )
         }
         mainViewPager.currentItem = 1
         // I (Alex) don't know the purpose of the following function
@@ -291,8 +329,13 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
     override fun searchInThisArea(longitude: Double, latitude: Double) {
         placesList.clear()
         currentResultsCount = 0
-        for(i in 0 until currentSportList.size) {
-            searchPlaces(longitude.toString(), latitude.toString(), currentDistance.toString(), currentSportList[i].id.toString())
+        for (i in 0 until currentSportList.size) {
+            searchPlaces(
+                longitude.toString(),
+                latitude.toString(),
+                currentDistance.toString(),
+                currentSportList[i].id.toString()
+            )
         }
     }
 
@@ -302,10 +345,11 @@ class MainActivity : AppCompatActivity(), MapFragment.OnFragmentInteractionListe
 
     private val locationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-            currentLatitude = location!!.latitude
-            currentLongitude = location!!.longitude
+            currentLatitude = location.latitude
+            currentLongitude = location.longitude
             mapFragment.setActualLocation(location)
         }
+
         override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
         override fun onProviderEnabled(provider: String) {}
         override fun onProviderDisabled(provider: String) {}
