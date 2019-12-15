@@ -82,13 +82,7 @@ Link to the subject : https://docs.google.com/presentation/d/1mwu2xx7_qfCZDfsRxs
  ## License
  This project is licensed under the MIT License - see the [LICENSE] file for details.
  
- ## Demo
- 
- ### video
- 
-<img alt="demo.gif" src="demo/demo.gif" width="216" height="384" /> 
- 
- ### Screenshots
+ ## Screenshots
  
 <img alt="sports_list.jpeg" src="demo/sports_list.jpeg" width="216" height="384" /> 
 
